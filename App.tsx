@@ -7,15 +7,14 @@
 
 import React from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
-import SplashScreen from './src/Screens/Login/SplashScreen';
-import IntroductionScreen from './src/Screens/Login/IntroductionScreen';
+import LoginScreen from './src/Screens/Login/LoginScreen';
 
 
 function App(): JSX.Element {
 
   return(
     <SafeAreaView>
-      <IntroductionScreen/>
+      <LoginScreen/>
     </SafeAreaView>
 
   )
