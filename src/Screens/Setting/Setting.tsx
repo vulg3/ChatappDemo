@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const VerificationScreen = () => {
+const Setting = () => {
   return (
     <View>
-      <Text>VerificationScreen</Text>
+      <Text>Setting</Text>
     </View>
   )
 }
 
-export default VerificationScreen
+export default Setting
 
 const styles = StyleSheet.create({})

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const VerificationScreen = () => {
+const Contacts = () => {
   return (
     <View>
-      <Text>VerificationScreen</Text>
+      <Text>Contacts</Text>
     </View>
   )
 }
 
-export default VerificationScreen
+export default Contacts
 
 const styles = StyleSheet.create({})

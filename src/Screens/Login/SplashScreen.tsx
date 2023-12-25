@@ -12,7 +12,7 @@ const SplashScreen = () => {
       }}>
       <Image
         style={{width: 200, height: 200}}
-        source={require('../../Asses/Image/chat-app-logo-icon-vector-removebg-preview.png')}
+        source={require('../../assets/Image/chat-app-logo-icon-vector-removebg-preview.png')}
       />
     </View>
   );
