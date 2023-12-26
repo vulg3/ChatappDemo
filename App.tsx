@@ -33,6 +33,7 @@ function App(): JSX.Element {
       </PaperProvider>
     </NavigationContainer>
   );
+
 }
 
 export default App;

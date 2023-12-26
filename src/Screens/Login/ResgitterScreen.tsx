@@ -47,7 +47,7 @@ const ResgitterScreen = () => {
           secureTextEntry
           keyboardType="email-address"
           autoCapitalize="none"
-          value={name}
+          value={email}
           onChangeText={text => setEmail(text)}
         />
         <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
