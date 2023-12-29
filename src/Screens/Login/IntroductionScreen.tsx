@@ -10,8 +10,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {HEIGHT, WIDTH} from '../../utilities/utility';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { RootStackScreenEnumLogin } from '../../component/Root/RootStackLogin';
 
-function IntroductionScreen() {
+const IntroductionScreen= (props: any) => {
+  const { navigation }: NativeStackHeaderProps = props;
+
   return (
     <LinearGradient colors={['#FFBBFF', '#43116A']} style={{height: HEIGHT}}>
       <View>
@@ -52,7 +56,7 @@ function IntroductionScreen() {
             <Text style={{color: '#D6E4E0', fontSize: 15}}>OR</Text>
             <View style={styles.horizontalLine} />
           </View>
-          <TouchableOpacity style={styles.btnSignup}>
+          <TouchableOpacity style={styles.btnSignup} onPress={() => navigation.navigate(RootStackScreenEnumLogin.RegisterScreen)}>
             <Text
               style={{
                 fontSize: 20,
@@ -72,7 +76,7 @@ function IntroductionScreen() {
             <Text style={{color: '#B9C1BE', fontSize: 15}}>
               Existing account?
             </Text>
-            <Pressable>
+            <Pressable onPress={() => navigation.navigate(RootStackScreenEnumLogin.LoginScreen)}>
               <Text style={{color: 'white', fontSize: 15}}> Login</Text>
             </Pressable>
           </View>

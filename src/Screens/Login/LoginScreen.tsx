@@ -1,6 +1,10 @@
 import {
+  Alert,
   Image,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -10,83 +14,207 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {HEIGHT, WIDTH} from '../../utilities/utility';
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {RootStackScreenEnumLogin} from '../../component/Root/RootStackLogin';
+import {isLoading, isLogin, updateUser} from '../../redux/Slices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import AxiosInstance from '../../Axios/Axios';
 
-const LoginScreen = () => {
+interface Login {
+  email: string;
+  password: string;
+}
+interface User {
+  _id: string;
+  _idUser: string;
+  email: string;
+  userName: string | null | undefined;
+  isOnline: string;
+  avatar: string | null | undefined;
+  gender: string;
+  birthDay: string;
+  phone: string;
+  listMessage: [];
+  tempImage: [];
+}
+
+const LoginScreen = (props: any) => {
+  const {navigation}: NativeStackHeaderProps = props;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const isLoginState = useSelector((state: any) => state.SlicesReducer.isLogin);
 
+  const handleSubmit = (data: User) => {
+    console.log('check');
+    dispatch(
+      updateUser({
+        _id: data._id,
+        _idUser: data._idUser,
+        email: data.email,
+        userName: data.userName,
+        avatar: data.avatar,
+        gender: data.gender,
+        birthDay: data.birthDay,
+        phone: data.phone,
+        isOnline: data.isOnline,
+        listMessage: data.listMessage,
+        tempImage: data.tempImage,
+      }),
+    );
+    dispatch(isLogin(!isLoginState));
+  };
+
+  const login = async (info: Login) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    try {
+      if (email == '') {
+        Alert.alert('Vui lòng email không được để trống');
+      } else if (!emailPattern.test(email)) {
+        Alert.alert('Email không hợp lệ');
+      } else if (password == '') {
+        Alert.alert('Vui lòng nhập mật khẩu');
+      } else {
+        const result = await AxiosInstance().post('/auth/login', {
+          email: info.email,
+          password: info.password,
+        });
+        const userInfo = result?.data.user;
+        userInfo && dispatch(isLoading(true));
+        console.log(userInfo);
+        if (result.data.status) {
+          const response = await AxiosInstance().post(
+            `/users/getUser/${userInfo._id}`,
+            {name: userInfo.username, email: userInfo.email},
+          );
+          const user = response.data.data;
+          await AsyncStorage.setItem('token', response?.data.access_token);
+          user && dispatch(isLoading(false));
+          if (user.active) {
+            if (userInfo.role === 'user') {
+              await AsyncStorage.setItem('email', email);
+              await AsyncStorage.setItem('password', password);
+              handleSubmit({
+                _id: user._id,
+                _idUser: userInfo._id,
+                email: userInfo.email,
+                userName: userInfo.username,
+                avatar: user.avatar,
+                gender: user.gender,
+                birthDay: user.birthDay,
+                phone: user.phone,
+                isOnline: user.isOnline,
+                listMessage: user.listMessage,
+                tempImage: user.tempImage,
+              });
+            } else {
+              console.warn('Tài khoản không có quyền đăng nhập !');
+            }
+          } else {
+            console.warn('Tài khoản đã bị khóa !');
+          }
+        } else {
+          console.log(result.data.message);
+        }
+      }
+    } catch (error) {
+      console.log('Error: ', error);
+    }
+    return [];
+  };
   return (
-    <View style={styles.container}>
-      <Pressable style={{margin: 15}}>
-        <Icon name="arrowleft" size={25} color="black" />
-      </Pressable>
-      <View style={{marginTop: 40}}>
-        <Text style={styles.Title}>Login to Chatbox</Text>
-        <Text style={styles.Content}>
-          Welcome back! Sign in using your social account or email to continue
-          us
-        </Text>
-        <View style={styles.Authentication}>
-          <Pressable style={styles.Circle}>
-            <Image
-              style={styles.ImageCircle}
-              source={require('../../assets/Image/Facebook-f_Logo-Blue-Logo.wine.png')}
-            />
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.container}>
+          <Pressable
+            style={{margin: 15}}
+            onPress={() =>
+              navigation.navigate(RootStackScreenEnumLogin.IntroductionScreen)
+            }>
+            <Icon name="arrowleft" size={25} color="black" />
           </Pressable>
-          <Pressable style={styles.Circle}>
-            <Image
-              style={styles.ImageCircle}
-              source={require('../../assets/Image/Google_Pay-Logo.wine.png')}
+          <View style={{marginTop: 40}}>
+            <Text style={styles.Title}>Login to Chatbox</Text>
+            <Text style={styles.Content}>
+              Welcome back! Sign in using your social account or email to
+              continue us
+            </Text>
+            <View style={styles.Authentication}>
+              <Pressable style={styles.Circle}>
+                <Image
+                  style={styles.ImageCircle}
+                  source={require('../../assets/Image/Facebook-f_Logo-Blue-Logo.wine.png')}
+                />
+              </Pressable>
+              <Pressable style={styles.Circle}>
+                <Image
+                  style={styles.ImageCircle}
+                  source={require('../../assets/Image/Google_Pay-Logo.wine.png')}
+                />
+              </Pressable>
+              <Pressable style={styles.Circle}>
+                <Image
+                  style={styles.ImageCircle}
+                  source={require('../../assets/Image/appleblack.png')}
+                />
+              </Pressable>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <View style={styles.horizontalLine} />
+              <Text style={{color: '#797C7B', fontSize: 15}}>OR</Text>
+              <View style={styles.horizontalLine} />
+            </View>
+          </View>
+          <View style={{marginVertical: 20, paddingHorizontal: 20}}>
+            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+              Your email
+            </Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={text => setEmail(text)}
             />
-          </Pressable>
-          <Pressable style={styles.Circle}>
-            <Image
-              style={styles.ImageCircle}
-              source={require('../../assets/Image/appleblack.png')}
+            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+              Password
+            </Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              autoCapitalize="none"
+              value={password}
+              onChangeText={text => setPassword(text)}
             />
-          </Pressable>
+          </View>
+          <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
+            <TouchableOpacity
+              style={styles.btnLogin}
+              onPress={() => login({email, password})}>
+              <Text style={styles.btnText}>Login</Text>
+            </TouchableOpacity>
+            <Pressable onPress={() => navigation.navigate(RootStackScreenEnumLogin.VerificationScreen)}>
+              <Text style={styles.Forgot}>Forgot Password?</Text>
+            </Pressable>
+          </View>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <View style={styles.horizontalLine} />
-          <Text style={{color: '#797C7B', fontSize: 15}}>OR</Text>
-          <View style={styles.horizontalLine} />
-        </View>
-      </View>
-      <View style={{marginVertical: 20, paddingHorizontal: 20}}>
-        <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-          Your email
-        </Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-        <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-          Password
-        </Text>
-        <TextInput
-          style={styles.input}
-          secureTextEntry
-          autoCapitalize="none"
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-      </View>
-      <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
-        <TouchableOpacity style={styles.btnLogin}>
-          <Text style={styles.btnText}>Login</Text>
-        </TouchableOpacity>
-        <Text style={styles.Forgot}>Forgot Password?</Text>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   Forgot: {
     color: '#24786D',
     textAlign: 'center',

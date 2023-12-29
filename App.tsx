@@ -10,6 +10,8 @@ import {DefaultTheme, PaperProvider} from 'react-native-paper';
 import SplashScreen from './src/Screens/Login/SplashScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './src/component/Navigation/Navigation';
+import {SafeAreaView} from 'react-native';
+import Message from './src/Screens/Message/Message';
 
 function App(): JSX.Element {
   const theme = {
@@ -33,7 +35,11 @@ function App(): JSX.Element {
       </PaperProvider>
     </NavigationContainer>
   );
-
+  // return (
+  //   <SafeAreaView>
+  //     <Message/>
+  //   </SafeAreaView>
+  // );
 }
 
 export default App;

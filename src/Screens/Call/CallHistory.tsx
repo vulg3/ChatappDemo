@@ -1,13 +1,14 @@
-import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Iconsearch from 'react-native-vector-icons/Feather';
 import Iconcall from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HEIGHT, WIDTH} from '../../utilities/utility';
 
-import moment from 'moment';// ngày tháng
+import moment from 'moment'; // ngày tháng
 
 type CallItem = {
+  id:string;
   img: string;
   fullname: string;
   date: string;
@@ -16,12 +17,20 @@ type CallItem = {
 };
 
 const CallHistory = () => {
+  const [callList, setcallList] = useState<CallItem[]>([]);
+  useEffect(() => {
+    setcallList(Data);
+  }, []);
   const renderItem = ({item}: {item: CallItem}) => {
     const truncatedFullName =
       item.fullname.length > 15
         ? `${item.fullname.substring(0, 15)}...`
         : item.fullname;
     return (
+      <TouchableHighlight
+      activeOpacity={1}
+      underlayColor="#DDDDDD"
+      onPress={() => Alert.alert('Pressed!')}>
       <View style={styles.itemContainer}>
         <Image source={{uri: item.img}} style={styles.avatar} />
         <View>
@@ -60,6 +69,8 @@ const CallHistory = () => {
           </Pressable>
         </View>
       </View>
+      </TouchableHighlight>
+
     );
   };
   return (
@@ -77,7 +88,8 @@ const CallHistory = () => {
         <View style={styles.horizontalLine} />
         <Text style={styles.Title}>Recent</Text>
         <FlatList
-          data={Data}
+          data={callList}
+          contentContainerStyle={{paddingBottom: HEIGHT * 0.15}}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
         />
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginLeft: 20,
+    marginLeft: 30,
   },
   Date: {
     color: '#797C7B',
@@ -125,8 +137,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
-    margin: 10,
     width: WIDTH,
+    height: HEIGHT * 0.15,
   },
   avatar: {
     width: 65,
@@ -177,7 +189,7 @@ const styles = StyleSheet.create({
 
 const Data = [
   {
-    id: 7,
+    id: '7',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long Dep Traidddddddddddddddddddddddđ',
     date: '26/12/2024',
@@ -185,7 +197,7 @@ const Data = [
     time: '7:35 AM',
   },
   {
-    id: 6,
+    id: '6',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long ',
     date: '25/12/2024',
@@ -193,7 +205,7 @@ const Data = [
     time: '7:35 AM',
   },
   {
-    id: 5,
+    id: '5',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long Dep Trai',
     date: '25/12/2024',
@@ -201,7 +213,7 @@ const Data = [
     time: '7:35 AM',
   },
   {
-    id: 4,
+    id: '4',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long Dep Trai',
     date: '25/12/2024',
@@ -209,7 +221,7 @@ const Data = [
     time: '7:35 AM',
   },
   {
-    id: 3,
+    id: '3',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long Dep Trai',
     date: '25/12/2024',
@@ -217,7 +229,7 @@ const Data = [
     time: '7:35 AM',
   },
   {
-    id: 2,
+    id: '2',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long Dep Trai',
     date: '25/12/2024',
@@ -225,7 +237,7 @@ const Data = [
     time: '7:35 AM',
   },
   {
-    id: 1,
+    id: '1',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'Vu Long Dep Trai',
     date: '25/12/2024',

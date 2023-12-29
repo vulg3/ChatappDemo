@@ -1,6 +1,9 @@
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -10,79 +13,97 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {HEIGHT, WIDTH} from '../../utilities/utility';
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {RootStackScreenEnumLogin} from '../../component/Root/RootStackLogin';
 
-const ResgitterScreen = () => {
+const ResgitterScreen = (props: any) => {
+  const {navigation}: NativeStackHeaderProps = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [confirmpass, setConfirmpass] = useState('')
+  const [confirmpass, setConfirmpass] = useState('');
 
   return (
-    <View style={styles.container}>
-      <Pressable style={{margin: 15}}>
-        <Icon name="arrowleft" size={25} color="black" />
-      </Pressable>
-      <View style={{marginTop: 40}}>
-        <Text style={styles.Title}>Sign up with Email</Text>
-        <Text style={styles.Content}>
-          Get chatting with friends and family today by signing up for our chat
-          app!
-        </Text>
-      </View>
-      <View style={{marginVertical: 20, paddingHorizontal: 20}}>
-        <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-          Your name
-        </Text>
-        <TextInput
-          style={styles.input}
-          autoCapitalize="none"
-          value={name}
-          onChangeText={text => setName(text)}
-        />
-        <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-          Your email
-        </Text>
-        <TextInput
-          style={styles.input}
-          secureTextEntry
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={text => setEmail(text)}
-        />
-        <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-          Password
-        </Text>
-        <TextInput
-          style={styles.input}
-          secureTextEntry
-          autoCapitalize="none"
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-        <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-          Confirm Password
-        </Text>
-        <TextInput
-          style={styles.input}
-          secureTextEntry
-          autoCapitalize="none"
-          value={confirmpass}
-          onChangeText={text => setConfirmpass(text)}
-        />
-      </View>
-      <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
-        <TouchableOpacity style={styles.btnLogin}>
-          <Text style={styles.btnText}>Create an account</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.container}>
+          <Pressable
+            style={{margin: 15}}
+            onPress={() =>
+              navigation.navigate(RootStackScreenEnumLogin.IntroductionScreen)
+            }>
+            <Icon name="arrowleft" size={25} color="black" />
+          </Pressable>
+          <View style={{marginTop: 40}}>
+            <Text style={styles.Title}>Sign up with Email</Text>
+            <Text style={styles.Content}>
+              Get chatting with friends and family today by signing up for our
+              chat app!
+            </Text>
+          </View>
+          <View style={{marginVertical: 20, paddingHorizontal: 20}}>
+            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+              Your name
+            </Text>
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              value={name}
+              onChangeText={text => setName(text)}
+            />
+            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+              Your email
+            </Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={text => setEmail(text)}
+            />
+            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+              Password
+            </Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              autoCapitalize="none"
+              value={password}
+              onChangeText={text => setPassword(text)}
+            />
+            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+              Confirm Password
+            </Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry
+              autoCapitalize="none"
+              value={confirmpass}
+              onChangeText={text => setConfirmpass(text)}
+            />
+          </View>
+          <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
+            <TouchableOpacity style={styles.btnLogin}>
+              <Text style={styles.btnText}>Create an account</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 export default ResgitterScreen;
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   Forgot: {
     color: '#24786D',
     textAlign: 'center',

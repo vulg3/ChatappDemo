@@ -1,5 +1,14 @@
-import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  Alert,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Iconsearch from 'react-native-vector-icons/Feather';
 import Iconcall from 'react-native-vector-icons/SimpleLineIcons';
@@ -7,28 +16,42 @@ import {HEIGHT, WIDTH} from '../../utilities/utility';
 import moment from 'moment';
 
 type Contacts = {
+  id: string;
   img: string;
   fullname: string;
-  Status:string;
-
+  Status: string;
 };
 
 const Contacts = () => {
+  const [conTacts, setconTacts] = useState<Contacts[]>([]);
+
+  useEffect(() => {
+    setconTacts(Data);
+  }, []);
 
   const renderItem = ({item}: {item: Contacts}) => {
+    const truncatedFullName =
+      item.fullname.length > 15
+        ? `${item.fullname.substring(0, 15)}...`
+        : item.fullname;
 
     return (
-      <View style={styles.itemContainer}>
-        <Image source={{uri: item.img}} style={styles.avatar} />
-        <View>
-          <Text style={styles.Name}>{item.fullname}</Text>
+      <TouchableHighlight
+        activeOpacity={1}
+        underlayColor="#DDDDDD"
+        onPress={() => Alert.alert('Pressed!')}>
+        <View style={styles.itemContainer}>
+          <Image source={{uri: item.img}} style={styles.avatar} />
+          <View>
+            <Text style={styles.Name}>{truncatedFullName}</Text>
             <Text style={styles.Status}>{item.Status}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableHighlight>
     );
   };
   return (
-    <View style={{backgroundColor: 'black', height: 'auto', width: WIDTH}}>
+    <View style={{backgroundColor:'black'}}>
       <View style={styles.Header}>
         <Pressable style={styles.Button}>
           <Iconsearch name="search" size={30} color="white" />
@@ -42,7 +65,8 @@ const Contacts = () => {
         <View style={styles.horizontalLine} />
         <Text style={styles.Title}>My Contact</Text>
         <FlatList
-          data={Data}
+          contentContainerStyle={{ paddingBottom: HEIGHT * 0.15 }}
+          data={conTacts}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
         />
@@ -80,7 +104,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
-    margin: 10,
+    width: WIDTH,
+    height: HEIGHT * 0.15,
   },
   avatar: {
     width: 65,
@@ -126,50 +151,46 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: 'black',
   },
 });
 
 const Data = [
   {
-    id: 7,
+    id: '1',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'aVu Long Dep Trai',
-    Status:'Life is beautiful 👌',
+    Status: 'Life is beautiful 👌',
   },
   {
-    id: 6,
+    id: '2',
+    img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
+    fullname: 'aVu Long Dep Trai',
+    Status: 'Life is beautiful 👌',
+  },
+  {
+    id: '3',
+    img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
+    fullname: 'aVu Long Dep Trai',
+    Status: 'Life is beautiful 👌',
+  },
+  {
+    id: '4',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'zVu Long Dep Trai',
-    Status:'Life is beautiful 👌',
+    Status: 'Life is beautiful 👌',
   },
   {
-    id: 5,
+    id: '5',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'eVu Long Dep Trai',
-    Status:'Life is beautiful 👌',
+    Status: 'Life is beautiful 👌',
   },
   {
-    id: 4,
+    id: '6',
     img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
     fullname: 'dVu Long Dep Trai',
-    Status:'Life is beautiful 👌',
+    Status: 'Life is beautiful 👌',
   },
-  {
-    id: 3,
-    img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
-    fullname: 'cVu Long Dep Trai',
-    Status:'Life is beautiful 👌',
-  },
-  {
-    id: 2,
-    img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
-    fullname: 'bVu Long Dep Trai',
-    Status:'Life is beautiful 👌',
-  },
-  {
-    id: 1,
-    img: 'https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-white-silhouette-avatar-png-image_3418408.jpg',
-    fullname: 'aVu Long Dep Trai',
-    Status:'Be your own hero 💪',
-  },
+
 ];
