@@ -11,7 +11,7 @@
   import React, {useEffect, useState} from 'react';
   import IconDot from 'react-native-vector-icons/MaterialCommunityIcons';
   import Iconsearch from 'react-native-vector-icons/Feather';
-  import {HEIGHT, WIDTH} from '../../utilities/utility';
+  import {HEIGHT, WIDTH} from '../../untils/utility';
   import moment from 'moment';
 import { useSelector } from 'react-redux';
 

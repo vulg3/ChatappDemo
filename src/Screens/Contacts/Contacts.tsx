@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Iconsearch from 'react-native-vector-icons/Feather';
 import Iconcall from 'react-native-vector-icons/SimpleLineIcons';
-import {HEIGHT, WIDTH} from '../../utilities/utility';
+import {HEIGHT, WIDTH} from '../../untils/utility';
 import moment from 'moment';
 
 type Contacts = {

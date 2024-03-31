@@ -16,6 +16,7 @@
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-firebase/app": "^18.7.3",
     "@react-native-firebase/database": "^18.7.3",
+    "@react-native-google-signin/google-signin": "^11.0.0",
     "@react-navigation/material-bottom-tabs": "^6.2.19",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
@@ -37,6 +38,7 @@
     "react-native-vector-icons": "^10.0.3",
     "react-navigation-transitions": "^1.0.12",
     "react-redux": "^9.0.4",
+    "realm": "^12.6.2",
     "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.1",
     "uid": "^2.0.2"

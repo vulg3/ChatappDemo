@@ -9,7 +9,7 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconKey from 'react-native-vector-icons/Octicons';
-import {HEIGHT, WIDTH} from '../../utilities/utility';
+import {HEIGHT, WIDTH} from '../../untils/utility';
 
 const Setting = () => {
   const [avatarUrl, setAvatarUrl] = useState(

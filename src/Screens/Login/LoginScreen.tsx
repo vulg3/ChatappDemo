@@ -11,15 +11,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {HEIGHT, WIDTH} from '../../utilities/utility';
-import {NativeStackHeaderProps} from '@react-navigation/native-stack';
-import {RootStackScreenEnumLogin} from '../../component/Root/RootStackLogin';
-import {isLoading, isLogin, updateUser} from '../../redux/Slices';
+import { HEIGHT, WIDTH } from '../../untils/utility';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { RootStackScreenEnumLogin, RootStackScreenLogin } from '../../component/Root/RootStackLogin';
+import { isLoading, isLogin, updateUser } from '../../redux/Slices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AxiosInstance from '../../Axios/Axios';
+import Navigation from '../../component/Navigation/Navigation';
+import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
+
 
 interface Login {
   email: string;
@@ -35,17 +38,40 @@ interface User {
   gender: string;
   birthDay: string;
   phone: string;
-  listMessage: [];
-  tempImage: [];
+  Chat: [];
 }
 
 const LoginScreen = (props: any) => {
-  const {navigation}: NativeStackHeaderProps = props;
-
+  const { navigation }: NativeStackHeaderProps = props;
+  const [userInfo, setUserInfo] = useState<any>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const isLoginState = useSelector((state: any) => state.SlicesReducer.isLogin);
+
+  GoogleSignin.configure({
+    webClientId: '928635624624-vjkmkm1tl3jj6hb2nsaaaaa2229c5g34.apps.googleusercontent.com',
+  });
+
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      setUserInfo({ userInfo });
+    } catch (error : any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
 
   const handleSubmit = (data: User) => {
     console.log('check');
@@ -60,8 +86,7 @@ const LoginScreen = (props: any) => {
         birthDay: data.birthDay,
         phone: data.phone,
         isOnline: data.isOnline,
-        listMessage: data.listMessage,
-        tempImage: data.tempImage,
+        Chat: data.Chat,
       }),
     );
     dispatch(isLogin(!isLoginState));
@@ -87,7 +112,7 @@ const LoginScreen = (props: any) => {
         if (result.data.status) {
           const response = await AxiosInstance().post(
             `/users/getUser/${userInfo._id}`,
-            {name: userInfo.username, email: userInfo.email},
+            { name: userInfo.username, email: userInfo.email },
           );
           const user = response.data.data;
           await AsyncStorage.setItem('token', response?.data.access_token);
@@ -106,8 +131,7 @@ const LoginScreen = (props: any) => {
                 birthDay: user.birthDay,
                 phone: user.phone,
                 isOnline: user.isOnline,
-                listMessage: user.listMessage,
-                tempImage: user.tempImage,
+                Chat: user.Chat,
               });
             } else {
               console.warn('Tài khoản không có quyền đăng nhập !');
@@ -126,19 +150,19 @@ const LoginScreen = (props: any) => {
   };
   return (
     <KeyboardAvoidingView
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.container}>
           <Pressable
-            style={{margin: 15}}
+            style={{ margin: 15 }}
             onPress={() =>
               navigation.navigate(RootStackScreenEnumLogin.IntroductionScreen)
             }>
             <Icon name="arrowleft" size={25} color="black" />
           </Pressable>
-          <View style={{marginTop: 40}}>
+          <View style={{ marginTop: 40 }}>
             <Text style={styles.Title}>Login to Chatbox</Text>
             <Text style={styles.Content}>
               Welcome back! Sign in using your social account or email to
@@ -164,14 +188,14 @@ const LoginScreen = (props: any) => {
                 />
               </Pressable>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <View style={styles.horizontalLine} />
-              <Text style={{color: '#797C7B', fontSize: 15}}>OR</Text>
+              <Text style={{ color: '#797C7B', fontSize: 15 }}>OR</Text>
               <View style={styles.horizontalLine} />
             </View>
           </View>
-          <View style={{marginVertical: 20, paddingHorizontal: 20}}>
-            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+          <View style={{ marginVertical: 20, paddingHorizontal: 20 }}>
+            <Text style={{ color: '#24786D', fontSize: 15, fontWeight: 'bold' }}>
               Your email
             </Text>
             <TextInput
@@ -181,7 +205,7 @@ const LoginScreen = (props: any) => {
               value={email}
               onChangeText={text => setEmail(text)}
             />
-            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+            <Text style={{ color: '#24786D', fontSize: 15, fontWeight: 'bold' }}>
               Password
             </Text>
             <TextInput
@@ -191,11 +215,16 @@ const LoginScreen = (props: any) => {
               value={password}
               onChangeText={text => setPassword(text)}
             />
+            <TouchableOpacity onPress={() => navigation.navigate(RootStackScreenEnumLogin.RegisterScreen)} style={{ alignItems: 'flex-end' ,margin:20}}>
+              <Text style={{ color: '#24786D', fontSize: 15, fontWeight: 'bold' }}>
+                Sign up with email ?
+              </Text>
+            </TouchableOpacity>
           </View>
-          <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
+          <View style={{ position: 'absolute', bottom: 60, width: '100%', marginTop: 10 }}>
             <TouchableOpacity
               style={styles.btnLogin}
-              onPress={() => login({email, password})}>
+              onPress={() => login({ email, password })}>
               <Text style={styles.btnText}>Login</Text>
             </TouchableOpacity>
             <Pressable onPress={() => navigation.navigate(RootStackScreenEnumLogin.VerificationScreen)}>
@@ -222,7 +251,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 10,
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: {width: 2, height: 2},
+    textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
   },
   btnText: {

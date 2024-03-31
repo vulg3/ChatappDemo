@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {HEIGHT, WIDTH} from '../../utilities/utility';
+import {HEIGHT, WIDTH} from '../../untils/utility';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {RootStackScreenEnumLogin} from '../../component/Root/RootStackLogin';
 

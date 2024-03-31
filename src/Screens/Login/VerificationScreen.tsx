@@ -18,7 +18,7 @@ import {
 import {InputItem} from '@ant-design/react-native';
 import AxiosInstance from '../../Axios/Axios';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
-import {BG_COLOR, PADDING_HORIZONTAL} from '../../utilities/utility';
+import {BG_COLOR, PADDING_HORIZONTAL} from '../../untils/utility';
 import {RootStackScreenEnumLogin} from '../../component/Root/RootStackLogin';
 import Icon from 'react-native-vector-icons/AntDesign';
 

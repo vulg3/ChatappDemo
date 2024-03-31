@@ -1,6 +1,6 @@
 import React from 'react';
 import {RootBottomTab, RootTabParamList, configTab} from './RootTab/RootTab';
-import {COLORS} from '../../utilities';
+import {COLORS} from '../../untils';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 const Tab = createMaterialBottomTabNavigator<RootTabParamList>();
 

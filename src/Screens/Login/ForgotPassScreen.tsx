@@ -15,7 +15,7 @@ import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {useDispatch} from 'react-redux';
 import {RootStackScreenEnumLogin} from '../../component/Root/RootStackLogin';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {HEIGHT, WIDTH} from '../../utilities/utility';
+import {HEIGHT, WIDTH} from '../../untils/utility';
 
 const ForgotPassScreen = (props: any) => {
   const {navigation}: NativeStackHeaderProps = props;
