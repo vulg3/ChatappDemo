@@ -3,7 +3,7 @@ import { FadeSettingScreen } from '../BottomNavigation/AniScreenBottomTab';
 
 
 export enum RootStackScreenEnumSetting {
-  Setting = 'Setting',
+  SettingScreen = 'SettingScreen',
 }
 export type RootStackParamListSetting = {
   Setting: undefined;
@@ -11,7 +11,7 @@ export type RootStackParamListSetting = {
 
 export const RootStackScreenSetting = () => {
   const Screen: any = [
-    { id: uid(), name: RootStackScreenEnumSetting.Setting, component: FadeSettingScreen, options: {} },
+    { id: uid(), name: RootStackScreenEnumSetting.SettingScreen, component: FadeSettingScreen, options: {} },
   ]
   return Screen;
 

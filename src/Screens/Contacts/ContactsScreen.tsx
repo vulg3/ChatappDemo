@@ -23,7 +23,7 @@ type Contacts = {
   Status: string;
 };
 
-const Contacts = ({ navigation }: NativeStackHeaderProps | any) => {
+const ContactsScreen = ({ navigation }: NativeStackHeaderProps | any) => {
   const [conTacts, setconTacts] = useState<Contacts[]>([]);
 
   // useEffect(() => {
@@ -77,7 +77,7 @@ const Contacts = ({ navigation }: NativeStackHeaderProps | any) => {
   );
 };
 
-export default Contacts;
+export default ContactsScreen;
 
 const styles = StyleSheet.create({
   Date: {

@@ -15,7 +15,7 @@ type CallItem = {
   time: string;
 };
 
-const CallHistory = ({ navigation }: NativeStackHeaderProps | any) => {
+const CallHistoryScreen = ({ navigation }: NativeStackHeaderProps | any) => {
   // const [callList, setcallList] = useState<CallItem[]>([]);
   // // useEffect(() => {
   // //   setcallList(Data);
@@ -79,7 +79,7 @@ const CallHistory = ({ navigation }: NativeStackHeaderProps | any) => {
   );
 };
 
-export default CallHistory;
+export default CallHistoryScreen;
 
 const styles = StyleSheet.create({
   imgicon: {

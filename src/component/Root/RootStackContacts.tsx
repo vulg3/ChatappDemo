@@ -3,7 +3,7 @@ import { FadeContactsScreen } from '../BottomNavigation/AniScreenBottomTab';
 
 
 export enum RootStackScreenEnumContacts {
-  Contacts = 'Contacts',
+  ContactsScreen = 'ContactsScreen',
 }
 export type RootStackParamListContacts = {
   Contacts: undefined;
@@ -11,7 +11,7 @@ export type RootStackParamListContacts = {
 
 export const RootStackScreenContacts = () => {
   const Screen: any = [
-    { id: uid(), name: RootStackScreenEnumContacts.Contacts, component: FadeContactsScreen, options: {} },
+    { id: uid(), name: RootStackScreenEnumContacts.ContactsScreen, component: FadeContactsScreen, options: {} },
   ]
   return Screen;
 

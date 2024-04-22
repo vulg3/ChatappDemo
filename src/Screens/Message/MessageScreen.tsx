@@ -22,7 +22,7 @@ type Messager = {
   DateTime: string;
 };
 
-const Message = ({ navigation }: NativeStackHeaderProps | any) => {
+const MessageScreen = ({ navigation }: NativeStackHeaderProps | any) => {
   // const [messList, setmessList] = useState<Messager[]>([]);
   // const user = useSelector((state: any) => state.SlicesReducer.user);
   // const defaultAvatar = require('../../assets/Image/avatar.png');
@@ -82,7 +82,7 @@ const Message = ({ navigation }: NativeStackHeaderProps | any) => {
   );
 };
 
-export default Message;
+export default MessageScreen;
 
 const styles = StyleSheet.create({
   itemContainer: {
