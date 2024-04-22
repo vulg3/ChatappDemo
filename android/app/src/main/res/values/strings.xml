@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ChatAppDemo</string>
+    <string name="facebook_app_id">1131373724862612</string>
+    <string name="facebook_client_token">28a1cdb160b0fd1d6c39c898f853b0c4</string>
 </resources>

@@ -1,12 +1,12 @@
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import {Animated} from 'react-native';
-import Message from '../../Screens/Message/Message';
-import CallHistory from '../../Screens/Call/CallHistory';
-import Contacts from '../../Screens/Contacts/Contacts';
-import Setting from '../../Screens/Setting/Setting';
+import { Animated } from 'react-native';
+import Message from '../../Screens/Message/MessageScreen';
+import CallHistory from '../../Screens/CallHistory/CallHistoryScreen';
+import Contacts from '../../Screens/Contacts/ContactsScreen';
+import Setting from '../../Screens/Setting/SettingScreen';
 
-const FadeInView = (props: {children: any}) => {
+const FadeInView = (props: { children: any }) => {
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
   useFocusEffect(() => {
@@ -25,7 +25,7 @@ const FadeInView = (props: {children: any}) => {
   });
 
   return (
-    <Animated.View style={{flex: 1, opacity: fadeAnim}}>
+    <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
       {props.children}
     </Animated.View>
   );

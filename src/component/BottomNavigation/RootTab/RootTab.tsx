@@ -9,6 +9,9 @@ import ContactsNavigation from '../../Navigation/ContactsNavigation';
 import SettingNavigation from '../../Navigation/SettingNavigation';
 import { COLORS, ROUTES } from '../../constants';
 import { StyleSheet } from 'react-native';
+import IconMessAndContact from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconSettingAndContact from 'react-native-vector-icons/Ionicons';
+
 
 export enum RootTabScreenEnum {
   StackMess = 'Message',
@@ -31,7 +34,7 @@ export const RootBottomTab = () => {
     { id: 3, name: RootTabScreenEnum.StackContacts, component: ContactsNavigation, option: {} },
     { id: 4, name: RootTabScreenEnum.StackSetting, component: SettingNavigation, option: {} },
   ];
-  
+
   return Screens;
 };
 export const configTab = (route: any) => {
@@ -39,15 +42,18 @@ export const configTab = (route: any) => {
     tabBarIcon: ({ color, focused }: any) => {
       let iconName: any;
       if (route.name === ROUTES.MESS) {
-        iconName = focused ? 'message' : 'message-square';
+        iconName = focused ? 'message-processing' : 'message-processing-outline';
+        return <IconMessAndContact name={iconName} size={22} color={color} />
       } else if (route.name === ROUTES.CALL) {
         iconName = focused ? 'call-sharp' : 'call-outline';
+        return <IconSettingAndContact name={iconName} size={22} color={color} />
       } else if (route.name === ROUTES.CONTACTS) {
         iconName = focused ? 'contacts' : 'contacts-outline';
+        return <IconMessAndContact name={iconName} size={22} color={color} />
       } else if (route.name === ROUTES.SETTING) {
         iconName = focused ? 'settings-sharp' : 'settings-outline';
+        return <IconSettingAndContact name={iconName} size={22} color={color} />
       }
-      return iconName;
     },
     headerShown: false,
     tabBarShowLabel: false,

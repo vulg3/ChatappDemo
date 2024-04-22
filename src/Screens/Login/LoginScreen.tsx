@@ -20,7 +20,9 @@ import { isLoading, isLogin, updateUser } from '../../redux/Slices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import AxiosInstance from '../../Axios/Axios';
-import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import Loading from '../../component/Loading/Loading';
+
 
 
 interface Login {
@@ -58,8 +60,6 @@ const LoginScreen = (props: any) => {
     getDataStorage()
   }, [])
 
-
-  
   // SigninGG
   const signInGoogle = async () => {
     try {
@@ -95,36 +95,32 @@ const LoginScreen = (props: any) => {
       } else if (password == '') {
         Alert.alert('Vui lòng nhập mật khẩu');
       } else {
-        const result = await AxiosInstance().post('/auth/login', {
-          email: info.email,
-          password: info.password,
-        });
+        const result = await AxiosInstance().post('/auth/login', { email: info.email, password: info.password });
         const userInfos = result?.data.user;
         userInfos && dispatch(isLoading(true));
+        console.log('userInfos',userInfos);
         if (result.data.status) {
-          const response = await AxiosInstance().post(
-            `/user/GetUserByID/${userInfos._id}`,
-            { name: userInfos.username, email: userInfos.email },
-          );
+          const response = await AxiosInstance().post(`/user/GetUserByID/${userInfos._id}`, { name: userInfos.username, email: userInfos.email });
           const user = response.data.data;
-          await AsyncStorage.setItem('token', response?.data.access_token);
           user && dispatch(isLoading(false));
-            await AsyncStorage.setItem('email', email);
-            await AsyncStorage.setItem('password', password);
-            handleSubmit({
-              _id: user._id,
-              _idUser: userInfos._id,
-              email: userInfos.email,
-              name: userInfos.name,
-              listChat: user.lisChat,
-              avatar: user.avatar,
-              birthDate: user.birthDate,
-              phonenumber: user.phonenumber,
-              room: user.room,
-            });
 
+          await AsyncStorage.setItem('token', response?.data.access_token);
+          await AsyncStorage.setItem('email', email);
+          await AsyncStorage.setItem('password', password);
+
+          handleSubmit({
+            _id: user._id,
+            _idUser: userInfos._id,
+            email: userInfos.email,
+            name: userInfos.name,
+            listChat: user.lisChat,
+            avatar: user.avatar,
+            birthDate: user.birthDate,
+            phonenumber: user.phonenumber,
+            room: user.room
+          })
         } else {
-          console.log(result.data.message);
+          console.log('result.data.message',result.data.message);
         }
       }
     } catch (error) {
@@ -137,6 +133,7 @@ const LoginScreen = (props: any) => {
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}>
+      <Loading />
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.container}>
           <Pressable

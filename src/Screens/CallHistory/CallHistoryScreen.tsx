@@ -1,12 +1,13 @@
-import {Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { Alert, FlatList, Image, Pressable, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Iconsearch from 'react-native-vector-icons/Feather';
 import Iconcall from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HEIGHT, WIDTH} from '../../untils/utility';
+import { HEIGHT, WIDTH } from '../../untils/utility';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 type CallItem = {
-  id:string;
+  id: string;
   img: string;
   fullname: string;
   date: string;
@@ -14,85 +15,67 @@ type CallItem = {
   time: string;
 };
 
-const CallHistory = () => {
-  const [callList, setcallList] = useState<CallItem[]>([]);
-  useEffect(() => {
-    setcallList(Data);
-  }, []);
-  const renderItem = ({item}: {item: CallItem}) => {
-    const truncatedFullName =
-      item.fullname.length > 15
-        ? `${item.fullname.substring(0, 15)}...`
-        : item.fullname;
-    return (
-      <TouchableHighlight
-      activeOpacity={1}
-      underlayColor="#DDDDDD"
-      onPress={() => Alert.alert('Pressed!')}>
-      <View style={styles.itemContainer}>
-        <Image source={{uri: item.img}} style={styles.avatar} />
-        <View>
-          <Text style={styles.Name} numberOfLines={1} ellipsizeMode="tail">
-            {truncatedFullName}
-          </Text>
-          <View style={styles.infoContainer}>
-            {item.statusphone === 1 && (
-              <Iconcall name="call-made" size={20} color="#139C6F" />
-            )}
-            {item.statusphone === 2 && (
-              <Iconcall name="call-made" size={20} color="#EA3736" />
-            )}
-            {item.statusphone === 3 && (
-              <Iconcall name="call-received" size={20} color="#139C6F" />
-            )}
-            {item.statusphone === 4 && (
-              <Iconcall name="call-missed" size={20} color="#EA3736" />
-            )}
-            <Text style={styles.Date}>{item.date}, </Text>
-            <Text style={styles.Time}>{item.time}</Text>
-          </View>
-        </View>
-        <View style={styles.iconContainer}>
-          <Pressable>
-            <Image
-              style={styles.imgicon}
-              source={require('../../assets/Image/Call.png')}
-            />
-          </Pressable>
-          <Pressable>
-            <Image
-              style={styles.imgicon}
-              source={require('../../assets/Image/Video.png')}
-            />
-          </Pressable>
-        </View>
-      </View>
-      </TouchableHighlight>
-
-    );
-  };
+const CallHistory = ({ navigation }: NativeStackHeaderProps | any) => {
+  // const [callList, setcallList] = useState<CallItem[]>([]);
+  // // useEffect(() => {
+  // //   setcallList(Data);
+  // // }, []);
+  // const renderItem = ({item}: {item: CallItem}) => {
+  //   const truncatedFullName =
+  //     item.fullname.length > 15
+  //       ? `${item.fullname.substring(0, 15)}...`
+  //       : item.fullname;
+  //   return (
+  //     <TouchableHighlight
+  //     activeOpacity={1}
+  //     underlayColor="#DDDDDD"
+  //     onPress={() => Alert.alert('Pressed!')}>
+  //     <View style={styles.itemContainer}>
+  //       <Image source={{uri: item.img}} style={styles.avatar} />
+  //       <View style={styles.iconContainer}>
+  //         <Pressable>
+  //           <Image
+  //             style={styles.imgicon}
+  //             source={require('../../assets/Image/Call.png')}
+  //           />
+  //         </Pressable>
+  //         <Pressable>
+  //           <Image
+  //             style={styles.imgicon}
+  //             source={require('../../assets/Image/Video.png')}
+  //           />
+  //         </Pressable>
+  //       </View>
+  //     </View>
+  //     </TouchableHighlight>
+  //   );
+  // };
   return (
-    <View style={{backgroundColor: 'black', height: 'auto', width: WIDTH}}>
-      <View style={styles.Header}>
-        <Pressable style={styles.Button}>
-          <Iconsearch name="search" size={30} color="white" />
-        </Pressable>
-        <Text style={{color: 'white', fontSize: 20}}>Calls</Text>
-        <Pressable style={styles.Button}>
-          <Icon name="add-call" size={30} color="white" />
-        </Pressable>
-      </View>
-      <View style={styles.body}>
-        <View style={styles.horizontalLine} />
-        <Text style={styles.Title}>Recent</Text>
-        <FlatList
-          data={callList}
-          contentContainerStyle={{paddingBottom: HEIGHT * 0.15}}
-          renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
-        />
-      </View>
-    </View>
+    // <View style={{backgroundColor: 'black', height: 'auto', width: WIDTH}}>
+    //   <View style={styles.Header}>
+    //     <Pressable style={styles.Button}>
+    //       <Iconsearch name="search" size={30} color="white" />
+    //     </Pressable>
+    //     <Text style={{color: 'white', fontSize: 20}}>Calls</Text>
+    //     <Pressable style={styles.Button}>
+    //       <Icon name="add-call" size={30} color="white" />
+    //     </Pressable>
+    //   </View>
+    //   <View style={styles.body}>
+    //     <View style={styles.horizontalLine} />
+    //     <Text style={styles.Title}>Recent</Text>
+    //     {/* <FlatList
+    //       data={callList}
+    //       contentContainerStyle={{paddingBottom: HEIGHT * 0.15}}
+    //       renderItem={renderItem}
+    //       keyExtractor={item => item.id.toString()}
+    //     /> */}
+    //   </View>
+    // </View>
+
+    <View><Text>Call History</Text></View>
+
+
   );
 };
 

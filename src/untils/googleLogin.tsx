@@ -1,25 +1,25 @@
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { useDispatch } from "react-redux";
-import { isLoading } from "../redux/Slices";
+// import { GoogleSignin } from "@react-native-google-signin/google-signin";
+// import { useDispatch } from "react-redux";
+// import { isLoading } from "../redux/Slices";
 
 
 
-const dispatch = useDispatch();
+// const dispatch = useDispatch();
 
   
-GoogleSignin.configure({
-  webClientId: '928635624624-vjkmkm1tl3jj6hb2nsaaaaa2229c5g34.apps.googleusercontent.com',
-});
+// GoogleSignin.configure({
+//   webClientId: '928635624624-vjkmkm1tl3jj6hb2nsaaaaa2229c5g34.apps.googleusercontent.com',
+// });
 
-async function GoogleSigninButton() {
-  try {
-    dispatch(isLoading(true));
+// async function GoogleSigninButton() {
+//   try {
+//     dispatch(isLoading(true));
 
-  } catch (error) {
-    dispatch(isLoading(false));
-    console.log('Login failed');
-  }
-}
+//   } catch (error) {
+//     dispatch(isLoading(false));
+//     console.log('Login failed');
+//   }
+// }
 
 
 // const signIn = async () => {

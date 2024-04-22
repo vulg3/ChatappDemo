@@ -14,14 +14,9 @@ const BottomTab = () => {
       activeColor={COLORS.dark}
       inactiveColor={COLORS.gray}
       screenOptions={({ route }: any) => configTab(route)}>
-      {RootBottomTab().map((item, index) => (
-        <Tab.Screen
-          key={item.id}
-          name={item.name}
-          component={item.component}
-          options={item.option}
-        />
-      ))}
+      {
+        RootBottomTab().map((item, index) => <Tab.Screen key={item.id} name={item.name} component={item.component} options={item.option} />)
+      }
     </Tab.Navigator>
   );
 };

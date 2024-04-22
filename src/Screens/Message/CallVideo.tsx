@@ -3,9 +3,7 @@ import React from 'react'
 
 const CallVideo = () => {
   return (
-    <View>
-      <Text>CallVideo</Text>
-    </View>
+    <View><Text>CallVideo</Text></View>
   )
 }
 

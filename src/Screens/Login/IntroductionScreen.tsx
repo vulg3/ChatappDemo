@@ -5,23 +5,20 @@ import {
   Text,
   View,
   Image,
-  Button,
   Pressable,
   TouchableOpacity,
 } from 'react-native';
 import { HEIGHT, WIDTH } from '../../untils/utility';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { RootStackScreenEnumLogin } from '../../component/Root/RootStackLogin';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginGoogle, isLoading, isLogin, updateUser } from '../../redux/Slices';
-import Realm, { App } from 'realm';
+import Realm from 'realm';
 import AxiosInstance from '../../Axios/Axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
+import auth from '@react-native-firebase/auth';
 
 interface User {
   _id: string;
@@ -35,132 +32,164 @@ interface User {
 }
 
 const IntroductionScreen = (props: any) => {
-  const { navigation }: NativeStackHeaderProps = props;
-  const dispatch = useDispatch();
-  const isLoginState = useSelector((state: any) => state.SlicesReducer.isLogin);
+  // const { navigation }: NativeStackHeaderProps = props;
+  // const dispatch = useDispatch();
+  // const isLoginState = useSelector((state: any) => state.SlicesReducer.isLogin);
 
-    const app = new Realm.App({
-      id: "chatappdemo-fjywd",
-    });
-  GoogleSignin.configure({
-    webClientId: '928635624624-0qgi9fdeqajtg4u5i2t5teioj23tltts.apps.googleusercontent.com',
-  });
+  // const app = new Realm.App({
+  //   id: "chatappdemo-fjywd",
+  // });
 
-  const handleSubmit = (data: User) => {
-    console.log('check');
-    dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, listChat: data.listChat, avatar: data.avatar, birthDate: data.birthDate, phonenumber: data.phonenumber }))
-    dispatch(isLogin(!isLoginState));
-  }
+  // GoogleSignin.configure({
+  //   webClientId: '236916747164-a6eh2sk09tf9sckppnlgak3k1kjvk675.apps.googleusercontent.com',
 
-  async function signInGoogle() {
-    try {
-      dispatch(isLoading(true));
-      await GoogleSignin.hasPlayServices();
-      const { idToken, user: userGoogle }: any = await GoogleSignin.signIn();
-      const credential = Realm.Credentials.google({ idToken });
-      const userRealm = await app.logIn(credential);
+  // });
 
-      console.log(credential+'credential');
-      console.log(userRealm +'userRealm');
-      console.log("signed in as Realm user Google", userRealm.id);
+  // const handleSubmit = (data: User) => {
+  //   console.log('check');
+  //   dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, listChat: data.listChat, avatar: data.avatar, birthDate: data.birthDate, phonenumber: data.phonenumber }))
+  //   dispatch(isLogin(!isLoginState));
+  // }
 
-      if (userRealm) {
-        const response = await AxiosInstance().post(`/user/GetUserByID/${userRealm.id}`, { name: userGoogle.user.name, email: userGoogle.user.email });
-        const user = response.data.data;
-        await AsyncStorage.setItem('token', response?.data.access_token);
-        user && dispatch(isLoading(false));
-        handleSubmit({ _id: user._id, _idUser: user._idUser, email: userGoogle.user.email, name: userGoogle?.user?.givenName, phonenumber: user.phonenumber, birthDate: user.birthDate, listChat: user.listChat, avatar: userGoogle?.user.photo });
-        dispatch(LoginGoogle(true));
-        console.log('Signed in with Google!')
-        console.log("login succsetfully");
-      } else {
-        dispatch(isLoading(false));
-        console.log("login failed");
-      }
-    } catch (error: any) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-        dispatch(isLoading(false));
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-        dispatch(isLoading(false));
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        dispatch(isLoading(false));
-      } else {
-        dispatch(isLoading(false));
-        console.log(error);
-      }
-    }
-  };
+  // async function signInGoogle() {
+  //   try {
+  //     dispatch(isLoading(true));
+  //     await GoogleSignin.hasPlayServices();
+  //     const { idToken, user: userGoogle }: any = await GoogleSignin.signIn();
+  //     const credential = Realm.Credentials.google({ idToken });
+  //     const userRealm = await app.logIn(credential);
+
+  //     if (userRealm) {
+
+  //       console.log(credential + 'credential');
+  //       console.log(userRealm + 'userRealm');
+  //       console.log("signed in as Realm user Google", userRealm.id);
+  //       const response = await AxiosInstance().post(`/user/GetUserByID/${userRealm.id}`, { name: userGoogle.user.name, email: userGoogle.user.email });
+  //       const user = response.data.data;
+  //       await AsyncStorage.setItem('token', response?.data.access_token);
+  //       user && dispatch(isLoading(false));
+  //       handleSubmit({ _id: user._id, _idUser: user._idUser, email: userGoogle.user.email, name: userGoogle?.user?.givenName, phonenumber: user.phonenumber, birthDate: user.birthDate, listChat: user.listChat, avatar: userGoogle?.user.photo });
+  //       dispatch(LoginGoogle(true));
+  //       console.log('Signed in with Google!')
+  //       console.log("login succsetfully");
+
+  //     } else {
+  //       dispatch(isLoading(false));
+  //       console.log("login failed");
+  //     }
+  //   } catch (error: any) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       dispatch(isLoading(false));
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       dispatch(isLoading(false));
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       dispatch(isLoading(false));
+  //     } else {
+  //       dispatch(isLoading(false));
+  //       console.log(error);
+  //       console.log("Error message:", error.message);
+  //       console.log("Error code:", error.code);
+  //       console.log("Error stack trace:", error.stack);
+  //     }
+  //   }
+  // };
+
+  // async function signInFacebook() {
+  //   try {
+  //     console.log('check button facebook');
+
+  //     // Attempt login with permissions
+  //     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+  //     if (result.isCancelled) {
+  //       throw 'User cancelled the login process';
+  //     }
+
+  //     // Once signed in, get the users AccessToken
+  //     const data = await AccessToken.getCurrentAccessToken();
+
+  //     if (!data) {
+  //       throw 'Something went wrong obtaining access token';
+  //     }
+
+  //     // Create a Firebase credential with the AccessToken
+  //     const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+  //     // Sign-in the user with the credential
+  //     return auth().signInWithCredential(facebookCredential);
+  //   } catch (error) {
+  //     console.log('check faild facebook');
+  //   }
+
+  // }
 
   return (
-    <LinearGradient colors={['#FFBBFF', '#43116A']} style={{ height: HEIGHT }}>
-      <View>
-        <View style={styles.header}>
-          <Image
-            style={styles.imageLogo}
-            source={require('../../assets/Image/chat-app-logo-icon-vector-removebg-preview.png')}
-          />
-        </View>
-        <View style={styles.container}>
-          <Text style={styles.Titletxt}>Connect friends easily & quickly</Text>
-          <Text style={styles.Content}>
-            Our chat app is the perfect way to stay connected with friends and
-            family.
-          </Text>
-          <View style={styles.Authentication}>
-            <Pressable style={styles.Circle}>
-              <Image
-                style={styles.ImageCircle}
-                source={require('../../assets/Image/Facebook-f_Logo-Blue-Logo.wine.png')}
-              />
-            </Pressable>
-            <Pressable style={styles.Circle} onPress={() => signInGoogle()}>
-              <Image
-                style={styles.ImageCircle}
-                source={require('../../assets/Image/Google_Pay-Logo.wine.png')}
-              />
-            </Pressable>
-            <Pressable style={styles.Circle}>
-              <Image
-                style={styles.ImageCircle}
-                source={require('../../assets/Image/Apple_Inc.-Logo.wine.png')}
-              />
-            </Pressable>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <View style={styles.horizontalLine} />
-            <Text style={{ color: '#D6E4E0', fontSize: 15 }}>OR</Text>
-            <View style={styles.horizontalLine} />
-          </View>
-          <TouchableOpacity style={styles.btnSignup} onPress={() => navigation.navigate(RootStackScreenEnumLogin.RegisterScreen)}>
-            <Text
-              style={{
-                fontSize: 20,
-                alignSelf: 'center',
-                lineHeight: HEIGHT * 0.06,
-                color: '#000E08',
-              }}>
-              Sign up with email
-            </Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 17,
-            }}>
-            <Text style={{ color: '#B9C1BE', fontSize: 15 }}>
-              Existing account?
-            </Text>
-            <Pressable onPress={() => navigation.navigate(RootStackScreenEnumLogin.LoginScreen)}>
-              <Text style={{ color: 'white', fontSize: 15 }}> Login</Text>
-            </Pressable>
-          </View>
-        </View>
-      </View>
-    </LinearGradient>
+    // <View>
+    //   <LinearGradient colors={['#FFBBFF', '#43116A']} style={{ height: HEIGHT }}>
+    //     <View>
+    //       <View style={styles.header}>
+    //         <Image
+    //           style={styles.imageLogo}
+    //           source={require('../../assets/Image/chat-app-logo-icon-vector-removebg-preview.png')}
+    //         />
+    //       </View>
+    //       <View style={styles.container}>
+    //         <Text style={styles.Titletxt}>Connect friends easily & quickly</Text>
+    //         <Text style={styles.Content}>Our chat app is the perfect way to stay connected with friends and family.</Text>
+    //         <View style={styles.Authentication}>
+    //           <Pressable style={styles.Circle}>
+    //             <Image
+    //               style={styles.ImageCircle}
+    //               source={require('../../assets/Image/Facebook-f_Logo-Blue-Logo.wine.png')}
+    //             />
+    //           </Pressable>
+    //           <Pressable style={styles.Circle} onPress={() => signInGoogle().then(() => console.log('Signed in with Google!'))}>
+    //             <Image
+    //               style={styles.ImageCircle}
+    //               source={require('../../assets/Image/Google_Pay-Logo.wine.png')}
+    //             />
+    //           </Pressable>
+    //           <Pressable style={styles.Circle} onPress={() => signInFacebook().then(() => console.log('Signed in with Facebok!'))}>
+    //             <Image
+    //               style={styles.ImageCircle}
+    //               source={require('../../assets/Image/Apple_Inc.-Logo.wine.png')}
+    //             />
+    //           </Pressable>
+    //         </View>
+    //         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+    //           <View style={styles.horizontalLine} />
+    //           <Text style={{ color: '#D6E4E0', fontSize: 15 }}>OR</Text>
+    //           <View style={styles.horizontalLine} />
+    //         </View>
+    //         <TouchableOpacity style={styles.btnSignup} onPress={() => navigation.navigate(RootStackScreenEnumLogin.RegisterScreen)}>
+    //           <Text
+    //             style={{
+    //               fontSize: 20,
+    //               alignSelf: 'center',
+    //               lineHeight: HEIGHT * 0.06,
+    //               color: '#000E08',
+    //             }}>
+    //             Sign up with email
+    //           </Text>
+    //         </TouchableOpacity>
+    //         <View
+    //           style={{
+    //             flexDirection: 'row',
+    //             justifyContent: 'center',
+    //             marginTop: 17,
+    //           }}>
+    //           <Text style={{ color: '#B9C1BE', fontSize: 15 }}>
+    //             Existing account?
+    //           </Text>
+    //           <Pressable onPress={() => navigation.navigate(RootStackScreenEnumLogin.LoginScreen)}>
+    //             <Text style={{ color: 'white', fontSize: 15 }}> Login</Text>
+    //           </Pressable>
+    //         </View>
+    //       </View>
+    //     </View>
+    //   </LinearGradient>
+    // </View>
+    <View><Text>IntroductionScreen</Text></View>
   );
 }
 

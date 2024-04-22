@@ -11,12 +11,7 @@ export type RootStackParamListContacts = {
 
 export const RootStackScreenContacts = () => {
   const Screen: any = [
-    {
-      id: uid(),
-      name: RootStackScreenEnumContacts.Contacts,
-      comonent: FadeContactsScreen,
-      options: {},
-    },
+    { id: uid(), name: RootStackScreenEnumContacts.Contacts, component: FadeContactsScreen, options: {} },
   ]
   return Screen;
 

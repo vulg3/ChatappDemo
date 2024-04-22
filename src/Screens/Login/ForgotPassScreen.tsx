@@ -18,61 +18,62 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {HEIGHT, WIDTH} from '../../untils/utility';
 
 const ForgotPassScreen = (props: any) => {
-  const {navigation}: NativeStackHeaderProps = props;
+  // const {navigation}: NativeStackHeaderProps = props;
 
-  const [password, setPassword] = useState('');
-  const [newPass, setnewPass] = useState('');
-  const dispatch = useDispatch();
+  // const [password, setPassword] = useState('');
+  // const [newPass, setnewPass] = useState('');
+  // const dispatch = useDispatch();
 
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1}}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={styles.container}>
-          <View
-            style={{
-              height: '30%',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              style={{width: 200, height: 200}}
-              source={require('../../assets/Image/chat-app-logo-icon-vector-removebg-preview.png')}
-            />
-          </View>
-          <View style={{marginVertical: 20, paddingHorizontal: 20}}>
-            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-              New password
-            </Text>
-            <TextInput
-              style={styles.input}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-            <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
-              Confirm New password
-            </Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry
-              autoCapitalize="none"
-              value={newPass}
-              onChangeText={text => setnewPass(text)}
-            />
-          </View>
-          <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
-            <TouchableOpacity style={styles.btnLogin}>
-              <Text style={styles.btnText}>Change Password</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    // <KeyboardAvoidingView
+    //   style={{flex: 1}}
+    //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    //   keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -150}>
+    //   <ScrollView contentContainerStyle={styles.scrollView}>
+    //     <View style={styles.container}>
+    //       <View
+    //         style={{
+    //           height: '30%',
+    //           width: '100%',
+    //           justifyContent: 'center',
+    //           alignItems: 'center',
+    //         }}>
+    //         <Image
+    //           style={{width: 200, height: 200}}
+    //           source={require('../../assets/Image/chat-app-logo-icon-vector-removebg-preview.png')}
+    //         />
+    //       </View>
+    //       <View style={{marginVertical: 20, paddingHorizontal: 20}}>
+    //         <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+    //           New password
+    //         </Text>
+    //         <TextInput
+    //           style={styles.input}
+    //           keyboardType="email-address"
+    //           autoCapitalize="none"
+    //           value={password}
+    //           onChangeText={text => setPassword(text)}
+    //         />
+    //         <Text style={{color: '#24786D', fontSize: 15, fontWeight: 'bold'}}>
+    //           Confirm New password
+    //         </Text>
+    //         <TextInput
+    //           style={styles.input}
+    //           secureTextEntry
+    //           autoCapitalize="none"
+    //           value={newPass}
+    //           onChangeText={text => setnewPass(text)}
+    //         />
+    //       </View>
+    //       <View style={{position: 'absolute', bottom: 60, width: '100%'}}>
+    //         <TouchableOpacity style={styles.btnLogin}>
+    //           <Text style={styles.btnText}>Change Password</Text>
+    //         </TouchableOpacity>
+    //       </View>
+    //     </View>
+    //   </ScrollView>
+    // </KeyboardAvoidingView>
+    <View><Text>ForgotPassScreen</Text></View>
   );
 };
 

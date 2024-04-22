@@ -3,9 +3,7 @@ import React from 'react'
 
 const Call = () => {
   return (
-    <View>
-      <Text>Call</Text>
-    </View>
+    <View><Text>Call</Text></View>
   )
 }
 

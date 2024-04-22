@@ -19,7 +19,7 @@ export type RootStackParamListLogin = {
     RegisterScreen: undefined,
     VerificationScreen: undefined,
     ForgotPass: undefined,
-    IntroductionScreen:undefined,
+    IntroductionScreen: undefined,
 }
 
 

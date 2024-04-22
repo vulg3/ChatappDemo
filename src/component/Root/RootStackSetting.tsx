@@ -11,12 +11,7 @@ export type RootStackParamListSetting = {
 
 export const RootStackScreenSetting = () => {
   const Screen: any = [
-    {
-      id: uid(),
-      name: RootStackScreenEnumSetting.Setting,
-      comonent: FadeSettingScreen,
-      options: {},
-    },
+    { id: uid(), name: RootStackScreenEnumSetting.Setting, component: FadeSettingScreen, options: {} },
   ]
   return Screen;
 

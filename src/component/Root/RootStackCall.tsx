@@ -11,12 +11,7 @@ export type RootStackParamListCall = {
 
 export const RootStackScreenCall = () => {
   const Screen: any = [
-    {
-      id: uid(),
-      name: RootStackScreenEnumCall.CallHistory,
-      comonent: FadeCallScreen,
-      options: {},
-    },
+    { id: uid(), name: RootStackScreenEnumCall.CallHistory, component: FadeCallScreen, options: {} },
   ]
   return Screen;
 };

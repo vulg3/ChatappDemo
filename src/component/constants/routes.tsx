@@ -1,15 +1,6 @@
 export default {
     MESS: 'Message',
-    CALL : 'Call',
+    CALL : 'CallHistory',
     CONTACTS: 'Contacts',
     SETTING: 'Setting',
-
-    NOTIFICATION: 'Notification',
-    NOTINAVIGATOR: 'Notinavigator',
-    NOTIFICATION_DETAIL: 'Notification Detail',
-
-    FILTER : 'Filter',
-    SHORTBY : 'Short By',
-    
-    ACTIVITY: 'Activity',
   };

@@ -1,44 +1,46 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconDot from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HEIGHT, WIDTH} from '../../untils/utility';
-import {useSelector} from 'react-redux';
+import { HEIGHT, WIDTH } from '../../untils/utility';
+import { useSelector } from 'react-redux';
 
 
-const MessageDetail  = (prop: any) => {
-  const { keyClient, user, userName, title, avatar } = prop.route.params;
+const MessageDetail = (prop: any) => {
+  //const { keyClient, user, userName, title, avatar } = prop.route.params;
 
   return (
-    <View>
-      <View style={styles.header}>
-        <Pressable>
-          <Icon name="arrow-back" size={20} color="black" />
-        </Pressable>
-         <View style={styles.avatarContainer}>
-          <Image source={{ uri: avatar }} style={styles.avatar} />
-          {avatar.isOnline == 1 && (
-            <IconDot
-              name="circle"
-              size={10}
-              color={'#0FE16D'}
-              style={styles.dotContainer}
-            />
-          )}
-          {avatar.isOnline == 2 && (
-            <IconDot
-              name="circle"
-              size={10}
-              color={'#9A9E9C'}
-              style={styles.dotContainer}
-            />
-          )}
-        </View> 
-         <View>
-          <Text style={styles.Name}>{userName}</Text>
-        </View> 
-      </View>
-    </View>
+    //  <View>
+    // //   <View style={styles.header}>
+    // //     <Pressable>
+    // //       <Icon name="arrow-back" size={20} color="black" />
+    // //     </Pressable>
+    // //      <View style={styles.avatarContainer}>
+    // //       <Image source={{ uri: avatar }} style={styles.avatar} />
+    // //       {/* {avatar.isOnline == 1 && (
+    // //         <IconDot
+    // //           name="circle"
+    // //           size={10}
+    // //           color={'#0FE16D'}
+    // //           style={styles.dotContainer}
+    // //         />
+    // //       )}
+    // //       {avatar.isOnline == 2 && (
+    // //         <IconDot
+    // //           name="circle"
+    // //           size={10}
+    // //           color={'#9A9E9C'}
+    // //           style={styles.dotContainer}
+    // //         />
+    // //       )} */}
+    // //     </View> 
+    // //      {/* <View>
+    // //       <Text style={styles.Name}>{userName}</Text>
+    // //     </View>  */}
+    // //   </View>
+    //  </View>
+    <View><Text>MessageDetail</Text></View>
+
   );
 };
 
