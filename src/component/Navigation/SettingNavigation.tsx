@@ -6,7 +6,7 @@ import {RootStackScreenSetting} from '../Root/RootStackSetting';
 const SettingNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="SettingScreen"
+      initialRouteName="Setting"
       screenOptions={({route}) => configStack(route)}>
       {RootStackScreenSetting().map((item: any) => {
         return (

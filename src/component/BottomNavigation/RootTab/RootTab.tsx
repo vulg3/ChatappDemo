@@ -1,18 +1,18 @@
-import {NavigatorScreenParams} from '@react-navigation/native';
-import {RootStackParamListMessage} from '../../Root/RootStackMessager';
-import {RootStackParamListCall} from '../../Root/RootStackCall';
-import {RootStackParamListContacts} from '../../Root/RootStackContacts';
-import {RootStackParamListSetting} from '../../Root/RootStackSetting';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import { RootStackParamListMessage } from '../../Root/RootStackMessager';
+import { RootStackParamListCall } from '../../Root/RootStackCall';
+import { RootStackParamListContacts } from '../../Root/RootStackContacts';
+import { RootStackParamListSetting } from '../../Root/RootStackSetting';
 import MessagerNavigation from '../../Navigation/MessagerNavigation';
 import CallNavigation from '../../Navigation/CallNavigation';
 import ContactsNavigation from '../../Navigation/ContactsNavigation';
 import SettingNavigation from '../../Navigation/SettingNavigation';
-import {COLORS, ROUTES} from '../../constants';
-import {StyleSheet} from 'react-native';
+import { COLORS, ROUTES } from '../../constants';
+import { StyleSheet } from 'react-native';
 
 export enum RootTabScreenEnum {
-  StackMess = 'Messager',
-  StackCall = 'Call',
+  StackMess = 'Message',
+  StackCall = 'CallHistory',
   StackContacts = 'Contacts',
   StackSetting = 'Setting',
 }
@@ -26,16 +26,17 @@ export type RootTabParamList = {
 
 export const RootBottomTab = () => {
   const Screens: any[] = [
-    {id: 1, name: RootTabScreenEnum.StackMess, component: MessagerNavigation , option:{}},
-    {id: 2, name: RootTabScreenEnum.StackMess, component: CallNavigation, option:{}},
-    {id: 3, name: RootTabScreenEnum.StackMess, component: ContactsNavigation, option:{}},
-    {id: 4, name: RootTabScreenEnum.StackMess, component: SettingNavigation, option:{}},
+    { id: 1, name: RootTabScreenEnum.StackMess, component: MessagerNavigation, option: {} },
+    { id: 2, name: RootTabScreenEnum.StackCall, component: CallNavigation, option: {} },
+    { id: 3, name: RootTabScreenEnum.StackContacts, component: ContactsNavigation, option: {} },
+    { id: 4, name: RootTabScreenEnum.StackSetting, component: SettingNavigation, option: {} },
   ];
+  
   return Screens;
 };
 export const configTab = (route: any) => {
   return {
-    tabBarIcon: ({color, focused}: any) => {
+    tabBarIcon: ({ color, focused }: any) => {
       let iconName: any;
       if (route.name === ROUTES.MESS) {
         iconName = focused ? 'message' : 'message-square';

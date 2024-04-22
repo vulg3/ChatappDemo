@@ -5,8 +5,6 @@ import Iconsearch from 'react-native-vector-icons/Feather';
 import Iconcall from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HEIGHT, WIDTH} from '../../untils/utility';
 
-import moment from 'moment'; // ngày tháng
-
 type CallItem = {
   id:string;
   img: string;

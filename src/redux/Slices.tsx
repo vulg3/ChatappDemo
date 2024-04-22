@@ -10,12 +10,13 @@ const initialState = {
     _id: '',
     _idUser: '',
     email: '',
-    userName: '',
-    avatar: '',
-    birthDate: '',
+    name:'',
     phonenumber: '',
-    password: '',
     listChat: [],
+    birthDate: '',
+    avatar: '',
+    password:'',
+    room:[],
   },
 };
 
@@ -41,7 +42,7 @@ const Slice = createSlice({
     },
     updateName: (state, action) => {
       const value = action.payload;
-      state.user.userName = value;
+      state.user.name = value;
     },
     updatePass: (state, action) => {
       const value = action.payload;

@@ -1,5 +1,5 @@
 export default {
-    MESS: 'Messager',
+    MESS: 'Message',
     CALL : 'Call',
     CONTACTS: 'Contacts',
     SETTING: 'Setting',

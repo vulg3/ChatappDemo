@@ -7,7 +7,7 @@ import {RootStackScreenMessager} from '../Root/RootStackMessager';
 const MessagerNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="MessagerScreen"
+      initialRouteName="Message"
       screenOptions={({route}) => configStack(route)}>
       {RootStackScreenMessager().map((item: any) => {
         return (

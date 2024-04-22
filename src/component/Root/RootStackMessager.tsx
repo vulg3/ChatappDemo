@@ -5,41 +5,41 @@ import { uid } from 'uid';
 import { FadeMessageScreen } from '../BottomNavigation/AniScreenBottomTab';
 
 export enum RootStackScreenEnumMessage {
-  MessagerScreen = 'MessagerScreen',
-  MessagerDetailScreen = 'MessagerDetailScreen',
-  CallScreen = 'CallScreen',
-  CallVideoScreen = 'CallVideoScreen',
+  Message = 'Message',
+  MessageDetail = 'MessageDetail',
+  Call = 'Call',
+  CallVideo = 'CallVideo',
 }
 export type RootStackParamListMessage = {
-  MessagerScreen: undefined;
-  MessagerDetailScreen: undefined;
-  CallScreen: undefined;
-  CallVideoScreen: undefined;
+  Message: undefined;
+  MessageDetail: undefined;
+  Call: undefined;
+  CallVideo: undefined;
 };
 
 export const RootStackScreenMessager = () => {
   const Screen: any = [
     {
       id: uid(),
-      name: RootStackScreenEnumMessage.MessagerScreen,
+      name: RootStackScreenEnumMessage.Message,
       comonent: FadeMessageScreen,
       options: {},
     },
     {
       id: uid(),
-      name: RootStackScreenEnumMessage.MessagerDetailScreen,
+      name: RootStackScreenEnumMessage.MessageDetail,
       comonent: MessageDetail,
       options: {},
     },
     {
       id: uid(),
-      name: RootStackScreenEnumMessage.CallScreen,
+      name: RootStackScreenEnumMessage.Call,
       comonent: Call,
       options: {},
     },
     {
       id: uid(),
-      name: RootStackScreenEnumMessage.CallVideoScreen,
+      name: RootStackScreenEnumMessage.CallVideo,
       comonent: CallVideo,
       options: {},
     },

@@ -6,7 +6,7 @@ import {RootStackScreenContacts} from '../Root/RootStackContacts';
 const ContactsNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ContactsScreen"
+      initialRouteName="Contacts"
       screenOptions={({route}) => configStack(route)}>
       {RootStackScreenContacts().map((item: any) => {
         return (

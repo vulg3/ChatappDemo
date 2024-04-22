@@ -3,21 +3,20 @@ import { FadeCallScreen } from '../BottomNavigation/AniScreenBottomTab';
 
 
 export enum RootStackScreenEnumCall {
-    CallHistoryScreen = 'CallHistoryScreen',
+  CallHistory = 'CallHistory',
 }
 export type RootStackParamListCall = {
-  CallHistoryScreen: undefined;
+  CallHistory: undefined;
 };
 
 export const RootStackScreenCall = () => {
   const Screen: any = [
     {
       id: uid(),
-      name: RootStackScreenEnumCall.CallHistoryScreen,
+      name: RootStackScreenEnumCall.CallHistory,
       comonent: FadeCallScreen,
       options: {},
     },
   ]
   return Screen;
-
 };

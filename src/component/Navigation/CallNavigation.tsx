@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RootStackScreenCall } from '../Root/RootStackCall';
 
 const CallNavigation = () => {
-    return <Stack.Navigator initialRouteName='CallScreen' screenOptions={({ route }) => configStack(route)}>
+    return <Stack.Navigator initialRouteName='CallHistory' screenOptions={({ route }) => configStack(route)}>
         {RootStackScreenCall().map((item: any) => {
             return <Stack.Screen key={item.id} name={item.name} component={item.component} options={item.options} />
         })}

@@ -39,12 +39,11 @@ const IntroductionScreen = (props: any) => {
   const dispatch = useDispatch();
   const isLoginState = useSelector((state: any) => state.SlicesReducer.isLogin);
 
-
-  const app = new Realm.App({
-    id: "application-0-uwsjr",
-  });
+    const app = new Realm.App({
+      id: "chatappdemo-fjywd",
+    });
   GoogleSignin.configure({
-    webClientId: '928635624624-vjkmkm1tl3jj6hb2nsaaaaa2229c5g34.apps.googleusercontent.com',
+    webClientId: '928635624624-0qgi9fdeqajtg4u5i2t5teioj23tltts.apps.googleusercontent.com',
   });
 
   const handleSubmit = (data: User) => {
@@ -60,6 +59,11 @@ const IntroductionScreen = (props: any) => {
       const { idToken, user: userGoogle }: any = await GoogleSignin.signIn();
       const credential = Realm.Credentials.google({ idToken });
       const userRealm = await app.logIn(credential);
+
+      console.log(credential+'credential');
+      console.log(userRealm +'userRealm');
+      console.log("signed in as Realm user Google", userRealm.id);
+
       if (userRealm) {
         const response = await AxiosInstance().post(`/user/GetUserByID/${userRealm.id}`, { name: userGoogle.user.name, email: userGoogle.user.email });
         const user = response.data.data;
@@ -67,6 +71,7 @@ const IntroductionScreen = (props: any) => {
         user && dispatch(isLoading(false));
         handleSubmit({ _id: user._id, _idUser: user._idUser, email: userGoogle.user.email, name: userGoogle?.user?.givenName, phonenumber: user.phonenumber, birthDate: user.birthDate, listChat: user.listChat, avatar: userGoogle?.user.photo });
         dispatch(LoginGoogle(true));
+        console.log('Signed in with Google!')
         console.log("login succsetfully");
       } else {
         dispatch(isLoading(false));
@@ -84,9 +89,8 @@ const IntroductionScreen = (props: any) => {
         dispatch(isLoading(false));
       } else {
         dispatch(isLoading(false));
-        console.log('failed');
+        console.log(error);
       }
-
     }
   };
 

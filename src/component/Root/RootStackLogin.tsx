@@ -11,7 +11,7 @@ export enum RootStackScreenEnumLogin {
     LoginScreen = 'LoginScreen',
     RegisterScreen = 'RegisterScreen',
     VerificationScreen = 'VerificationScreen',
-    ForgotPass = 'ForgotPass',
+    ForgotPass = 'ForgotPassScreen',
     IntroductionScreen = 'IntroductionScreen',
 }
 export type RootStackParamListLogin = {

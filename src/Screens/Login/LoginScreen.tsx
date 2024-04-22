@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { HEIGHT, WIDTH } from '../../untils/utility';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
@@ -20,7 +20,6 @@ import { isLoading, isLogin, updateUser } from '../../redux/Slices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import AxiosInstance from '../../Axios/Axios';
-import Navigation from '../../component/Navigation/Navigation';
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 
 
@@ -32,34 +31,41 @@ interface User {
   _id: string;
   _idUser: string;
   email: string;
-  userName: string | null | undefined;
-  isOnline: string;
+  name: string | null | undefined;
   avatar: string | null | undefined;
-  gender: string;
-  birthDay: string;
-  phone: string;
-  Chat: [];
+  birthDate: string;
+  phonenumber: string;
+  listChat: [];
+  room: [];
 }
 
 const LoginScreen = (props: any) => {
   const { navigation }: NativeStackHeaderProps = props;
-  const [userInfo, setUserInfo] = useState<any>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const isLoginState = useSelector((state: any) => state.SlicesReducer.isLogin);
 
-  GoogleSignin.configure({
-    webClientId: '928635624624-vjkmkm1tl3jj6hb2nsaaaaa2229c5g34.apps.googleusercontent.com',
-  });
+  useEffect(() => {
+    const getDataStorage = async () => {
+      const emailStorage = await AsyncStorage.getItem('email');
+      const passwordStorage = await AsyncStorage.getItem('password');
+      if (emailStorage && passwordStorage) {
+        setEmail(emailStorage);
+        setPassword(passwordStorage);
+      }
+    }
+    getDataStorage()
+  }, [])
 
 
-  const signIn = async () => {
+  
+  // SigninGG
+  const signInGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      setUserInfo({ userInfo });
-    } catch (error : any) {
+    } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -75,22 +81,9 @@ const LoginScreen = (props: any) => {
 
   const handleSubmit = (data: User) => {
     console.log('check');
-    dispatch(
-      updateUser({
-        _id: data._id,
-        _idUser: data._idUser,
-        email: data.email,
-        userName: data.userName,
-        avatar: data.avatar,
-        gender: data.gender,
-        birthDay: data.birthDay,
-        phone: data.phone,
-        isOnline: data.isOnline,
-        Chat: data.Chat,
-      }),
-    );
+    dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, avatar: data.avatar, birthDay: data.birthDate, phonenumber: data.phonenumber, room: data.room, listChat: data.listChat }))
     dispatch(isLogin(!isLoginState));
-  };
+  }
 
   const login = async (info: Login) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -106,39 +99,30 @@ const LoginScreen = (props: any) => {
           email: info.email,
           password: info.password,
         });
-        const userInfo = result?.data.user;
-        userInfo && dispatch(isLoading(true));
-        console.log(userInfo);
+        const userInfos = result?.data.user;
+        userInfos && dispatch(isLoading(true));
         if (result.data.status) {
           const response = await AxiosInstance().post(
-            `/users/getUser/${userInfo._id}`,
-            { name: userInfo.username, email: userInfo.email },
+            `/user/GetUserByID/${userInfos._id}`,
+            { name: userInfos.username, email: userInfos.email },
           );
           const user = response.data.data;
           await AsyncStorage.setItem('token', response?.data.access_token);
           user && dispatch(isLoading(false));
-          if (user.active) {
-            if (userInfo.role === 'user') {
-              await AsyncStorage.setItem('email', email);
-              await AsyncStorage.setItem('password', password);
-              handleSubmit({
-                _id: user._id,
-                _idUser: userInfo._id,
-                email: userInfo.email,
-                userName: userInfo.username,
-                avatar: user.avatar,
-                gender: user.gender,
-                birthDay: user.birthDay,
-                phone: user.phone,
-                isOnline: user.isOnline,
-                Chat: user.Chat,
-              });
-            } else {
-              console.warn('Tài khoản không có quyền đăng nhập !');
-            }
-          } else {
-            console.warn('Tài khoản đã bị khóa !');
-          }
+            await AsyncStorage.setItem('email', email);
+            await AsyncStorage.setItem('password', password);
+            handleSubmit({
+              _id: user._id,
+              _idUser: userInfos._id,
+              email: userInfos.email,
+              name: userInfos.name,
+              listChat: user.lisChat,
+              avatar: user.avatar,
+              birthDate: user.birthDate,
+              phonenumber: user.phonenumber,
+              room: user.room,
+            });
+
         } else {
           console.log(result.data.message);
         }
@@ -215,7 +199,7 @@ const LoginScreen = (props: any) => {
               value={password}
               onChangeText={text => setPassword(text)}
             />
-            <TouchableOpacity onPress={() => navigation.navigate(RootStackScreenEnumLogin.RegisterScreen)} style={{ alignItems: 'flex-end' ,margin:20}}>
+            <TouchableOpacity onPress={() => navigation.navigate(RootStackScreenEnumLogin.RegisterScreen)} style={{ alignItems: 'flex-end', margin: 20 }}>
               <Text style={{ color: '#24786D', fontSize: 15, fontWeight: 'bold' }}>
                 Sign up with email ?
               </Text>
