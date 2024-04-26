@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { HEIGHT, WIDTH } from '../../untils/utility';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
@@ -22,24 +22,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import AxiosInstance from '../../Axios/Axios';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import Loading from '../../component/Loading/Loading';
+import { User } from '../../models/user';
+import { Login } from '../../models/login';
+import { socketService } from '../../Socket/socket';
 
-
-
-interface Login {
-  email: string;
-  password: string;
-}
-interface User {
-  _id: string;
-  _idUser: string;
-  email: string;
-  name: string | null | undefined;
-  avatar: string | null | undefined;
-  birthDate: string;
-  phonenumber: string;
-  listChat: [];
-  room: [];
-}
 
 const LoginScreen = (props: any) => {
   const { navigation }: NativeStackHeaderProps = props;
@@ -50,17 +36,23 @@ const LoginScreen = (props: any) => {
 
   useEffect(() => {
     const getDataStorage = async () => {
+      //login Normal
       const emailStorage = await AsyncStorage.getItem('email');
       const passwordStorage = await AsyncStorage.getItem('password');
+      const tokenStorage = await AsyncStorage.getItem('token');
+
       if (emailStorage && passwordStorage) {
         setEmail(emailStorage);
         setPassword(passwordStorage);
       }
+      socketService.connectWithAuthToken(tokenStorage as any);
     }
     getDataStorage()
+
+
   }, [])
 
-  // SigninGG
+  // // SigninGG
   const signInGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -80,10 +72,13 @@ const LoginScreen = (props: any) => {
 
 
   const handleSubmit = (data: User) => {
-    console.log('check');
-    dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, avatar: data.avatar, birthDay: data.birthDate, phonenumber: data.phonenumber, room: data.room, listChat: data.listChat }))
-    dispatch(isLogin(!isLoginState));
-  }
+      try {
+        dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, avatar: data.avatar, birthDay: data.birthDate, phonenumber: data.phonenumber, room: data.room, listChat: data.listChat, status: data.status, active: true }));
+        dispatch(isLogin(!isLoginState));
+      } catch (error) {
+        console.log('error', error);
+      }
+  };
 
   const login = async (info: Login) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -97,11 +92,18 @@ const LoginScreen = (props: any) => {
       } else {
         const result = await AxiosInstance().post('/auth/login', { email: info.email, password: info.password });
         const userInfos = result?.data.user;
+        console.log('token', result?.data.token);
+
         userInfos && dispatch(isLoading(true));
-        console.log('userInfos',userInfos);
         if (result.data.status) {
           const response = await AxiosInstance().post(`/user/GetUserByID/${userInfos._id}`, { name: userInfos.username, email: userInfos.email });
           const user = response.data.data;
+
+          if (!user.avatar) {
+            user.avatar = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg";
+          }
+          console.log('user', user);
+
           user && dispatch(isLoading(false));
 
           await AsyncStorage.setItem('token', response?.data.access_token);
@@ -112,15 +114,17 @@ const LoginScreen = (props: any) => {
             _id: user._id,
             _idUser: userInfos._id,
             email: userInfos.email,
-            name: userInfos.name,
-            listChat: user.lisChat,
+            name: userInfos.username,
+            listChat: user.listChat,
+            status: user.status,
             avatar: user.avatar,
             birthDate: user.birthDate,
             phonenumber: user.phonenumber,
-            room: user.room
+            room: user.room,
+            active: true,
           })
         } else {
-          console.log('result.data.message',result.data.message);
+          console.log('result.data.message', result.data.message);
         }
       }
     } catch (error) {

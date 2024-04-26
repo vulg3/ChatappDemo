@@ -5,18 +5,19 @@ const initialState = {
   isLoading: false,
   LoginGoogle: false,
   LoginFaceBook: false,
-
   user: {
     _id: '',
     _idUser: '',
     email: '',
-    name:'',
+    name: '',
     phonenumber: '',
     listChat: [],
     birthDate: '',
+    status: '',
     avatar: '',
-    password:'',
-    room:[],
+    password: '',
+    room: [],
+    active:false,
   },
 };
 
@@ -25,49 +26,38 @@ const Slice = createSlice({
   initialState,
   reducers: {
     updateUser: (state, action) => {
-      const value = action.payload;
-      state.user = value;
+      state.user = action.payload;
     },
     updatePhone: (state, action) => {
-      const value = action.payload;
-      state.user.phonenumber = value;
+      state.user.phonenumber = action.payload;
     },
     updateBirthDay: (state, action) => {
-      const value = action.payload;
-      state.user.birthDate = value;
+      state.user.birthDate = action.payload;
     },
     updateEmail: (state, action) => {
-      const value = action.payload;
-      state.user.email = value;
+      state.user.email = action.payload;
     },
     updateName: (state, action) => {
-      const value = action.payload;
-      state.user.name = value;
+      state.user.name = action.payload;
     },
     updatePass: (state, action) => {
-      const value = action.payload;
-      state.user.password = value;
+      state.user.password = action.payload;
     },
     isLogin: (state, action) => {
-      const value = action.payload;
-      state.isLogin = value;
+      state.isLogin = action.payload;
     },
     isLoading: (state, action) => {
-      const value = action.payload;
-      state.isLoading = value;
+      state.isLoading = action.payload;
     },
     LoginGoogle: (state, action) => {
-      console.log('login gg', action.payload);
-      const value = action.payload;
-      state.LoginGoogle = value;
+      state.LoginGoogle = action.payload;
     },
     LoginFacebook: (state, action) => {
-      console.log('login fb', action.payload);
-      const value = action.payload;
-      state.LoginFaceBook = value;
+      state.LoginFaceBook = action.payload;
     },
   },
 });
+
 export const {
   updateUser,
   isLogin,
@@ -80,4 +70,6 @@ export const {
   updateName,
   updatePass,
 } = Slice.actions;
+
+
 export default Slice.reducer;

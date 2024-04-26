@@ -1,5 +1,6 @@
 import {
   Image,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -9,123 +10,138 @@ import {
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconKey from 'react-native-vector-icons/Octicons';
-import { HEIGHT, WIDTH } from '../../untils/utility';
+import { HEIGHT, PADDING_HORIZONTAL, WIDTH } from '../../untils/utility';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { useDispatch, useSelector } from 'react-redux';
+import Iconpen from 'react-native-vector-icons/FontAwesome5';
+import ButtonBottom from '../../component/Button/Button';
+import * as Animatable from 'react-native-animatable';
+import ChangeName from './ChangeName';
+
 
 const SettingScreen = ({ navigation }: NativeStackHeaderProps | any) => {
-  // const [avatarUrl, setAvatarUrl] = useState(
-  //   'https://scontent.fsgn19-1.fna.fbcdn.net/v/t39.30808-1/329926999_619168540016905_551067399906215730_n.jpg?stp=dst-jpg_p240x240&_nc_cat=110&ccb=1-7&_nc_sid=5740b7&_nc_eui2=AeFW1cBCRU53it9HbKIoz5jGcsWFILMIqWtyxYUgswipa9in5Y3su1hMlUn-9xn3ISJLT4EmXNy05-rLIU0W3e2S&_nc_ohc=JRho-e4kx0MAX-sMfWH&_nc_ht=scontent.fsgn19-1.fna&oh=00_AfCh7GFLHHLdMvAvA4acIu1uE7PGeS_ARly56kVVUaQo1Q&oe=658F8EA9',
-  // );
-  // const [fullName, setFullName] = useState(
-  //   'long đẹp trai3333333333333333333333333333333333',
-  // );
-  // const [Status, setStatus] = useState('Nhậu đê');
+  const [modalVisible, setmodalVisible] = useState<boolean>(false)
+  const [nameModal, setnameModal] = useState<string>('')
+  const user = useSelector((state: any) => state.SlicesReducer.user);
+  const dispatch = useDispatch();
+  const truncatedFullName = user.name.length > 15 ? `${user.name.substring(0, 15)}...` : user.name;
 
-  // const truncatedFullName =
-  //   fullName.length > 15 ? `${fullName.substring(0, 15)}...` : fullName;
   return (
-    // <View style={styles.Container}>
-    //   <ScrollView>
-    //     <View style={styles.HeaderWrapper}>
-    //       <Pressable>
-    //         <Icon name="arrow-back" size={20} color="white" />
-    //       </Pressable>
-    //       <Text style={styles.Title}>Settings</Text>
-    //       <View />
-    //     </View>
-    //     <View style={styles.body}>
-    //       <View style={styles.horizontalLine} />
-    //       <View style={styles.itemContainer}>
-    //         <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-    //         <View style={{ flexDirection: 'row' }}>
-    //           <View>
-    //             <Text
-    //               style={styles.Name}
-    //               numberOfLines={1}
-    //               ellipsizeMode="tail">
-    //               {truncatedFullName}
-    //             </Text>
-    //             <Text style={styles.Status}>{Status}</Text>
-    //           </View>
-    //           <View style={styles.iconContainer}>
-    //             <Pressable>
-    //               <Image
-    //                 style={styles.imgicon}
-    //                 source={require('../../assets/Image/Qr.png')}
-    //               />
-    //             </Pressable>
-    //           </View>
-    //         </View>
-    //       </View>
+    <View style={styles.Container}>
+      <ScrollView>
+        <View style={styles.HeaderWrapper}>
+          <Pressable>
+            <Icon name="arrow-back" size={20} color="white" />
+          </Pressable>
+          <Text style={styles.Title}>Settings</Text>
+          <View />
+        </View>
 
-    //       <Pressable>
-    //         <View style={styles.itemfunction}>
-    //           <View style={styles.item}>
-    //             <IconKey name="key" size={26} />
-    //           </View>
-    //           <View style={{ flexDirection: 'row' }}>
-    //             <View style={{ marginLeft: 10 }}>
-    //               <Text style={styles.Titlefunction}>Account</Text>
-    //               <Text style={styles.Description}>
-    //                 Privacy, security, change number
-    //               </Text>
-    //             </View>
-    //           </View>
-    //         </View>
-    //       </Pressable>
+        <View style={styles.body}>
+          <Modal
+            transparent={false}
+            visible={modalVisible}
+            animationType="slide"
+            onRequestClose={() => true}
+          >
+            <View style={{ height: '100%' }}>
 
-    //       <Pressable>
-    //         <View style={styles.itemfunction}>
-    //           <View style={styles.item}>
-    //             <Icon name="chat-bubble-outline" size={26} />
-    //           </View>
-    //           <View style={{ flexDirection: 'row' }}>
-    //             <View style={{ marginLeft: 10 }}>
-    //               <Text style={styles.Titlefunction}>Chat</Text>
-    //               <Text style={styles.Description}>
-    //                 Privacy, security, change number
-    //               </Text>
-    //             </View>
-    //           </View>
-    //         </View>
-    //       </Pressable>
+              {(nameModal == 'ChangeName') ? <ChangeName action={{ setmodalVisible }} /> : null}
 
-    //       <Pressable>
-    //         <View style={styles.itemfunction}>
-    //           <View style={styles.item}>
-    //             <Icon name="notifications-none" size={26} />
-    //           </View>
-    //           <View style={{ flexDirection: 'row' }}>
-    //             <View style={{ marginLeft: 10 }}>
-    //               <Text style={styles.Titlefunction}>Notifications</Text>
-    //               <Text style={styles.Description}>
-    //                 Privacy, security, change number
-    //               </Text>
-    //             </View>
-    //           </View>
-    //         </View>
-    //       </Pressable>
+              <Animatable.View animation={'bounceIn'} style={{ paddingHorizontal: PADDING_HORIZONTAL, position: 'relative', bottom: 10 }}>
+                <Pressable onPress={() => { setmodalVisible(false) }}>
+                  <ButtonBottom title='Hủy' />
+                </Pressable>
+              </Animatable.View>
+            </View>
+          </Modal>
+          <View style={styles.horizontalLine} />
 
-    //       <Pressable>
-    //         <View style={styles.itemfunction}>
-    //           <View style={styles.item}>
-    //             <Icon name="help-outline" size={26} />
-    //           </View>
-    //           <View style={{ flexDirection: 'row' }}>
-    //             <View style={{ marginLeft: 10 }}>
-    //               <Text style={styles.Titlefunction}>Help</Text>
-    //               <Text style={styles.Description}>
-    //                 Privacy, security, change number
-    //               </Text>
-    //             </View>
-    //           </View>
-    //         </View>
-    //       </Pressable>
+          <View style={styles.itemContainer}>
+            <Image source={{ uri: user.avatar }} style={styles.avatar} />
+            <View style={{ flex: 2 }}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.Name} numberOfLines={1} ellipsizeMode="tail">{truncatedFullName}</Text>
+                  <Text style={styles.Status}>{user.status}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Pressable onPress={() => { setmodalVisible(true); setnameModal('ChangeName') }}>
+                    <Iconpen name="pen" size={15} color="black" />
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Pressable>
+                <Image
+                  style={styles.imgicon}
+                  source={require('../../assets/Image/Qr.png')}
+                />
+              </Pressable>
+            </View>
+          </View>
 
-    //     </View>
-    //   </ScrollView>
-    // </View>
-    <View><Text>Setting</Text></View>
+
+          <Pressable>
+            <View style={styles.itemfunction}>
+              <View style={styles.item}>
+                <IconKey name="key" size={26} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={styles.Titlefunction}>Account</Text>
+                  <Text style={styles.Description}>Status , </Text>
+                </View>
+              </View>
+            </View>
+          </Pressable>
+
+          <Pressable>
+            <View style={styles.itemfunction}>
+              <View style={styles.item}>
+                <Icon name="chat-bubble-outline" size={26} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={styles.Titlefunction}>Chat</Text>
+                  <Text style={styles.Description}>Privacy, security, change number</Text>
+                </View>
+              </View>
+            </View>
+          </Pressable>
+
+          <Pressable>
+            <View style={styles.itemfunction}>
+              <View style={styles.item}>
+                <Icon name="notifications-none" size={26} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={styles.Titlefunction}>Notifications</Text>
+                  <Text style={styles.Description}>Privacy, security, change number</Text>
+                </View>
+              </View>
+            </View>
+          </Pressable>
+
+          <Pressable>
+            <View style={styles.itemfunction}>
+              <View style={styles.item}>
+                <Icon name="help-outline" size={26} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={styles.Titlefunction}>Help</Text>
+                  <Text style={styles.Description}>Privacy, security, change number</Text>
+                </View>
+              </View>
+            </View>
+          </Pressable>
+
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -157,11 +173,8 @@ const styles = StyleSheet.create({
   imgicon: {
     width: 27,
     height: 27,
-    marginLeft: 60,
-  },
-  iconContainer: {
-    margin: 10,
-    alignSelf: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   Status: {
     color: '#797C7B',
@@ -174,11 +187,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     lineHeight: 20,
-    marginBottom: 7,
+    marginTop: 3,
   },
   avatar: {
-    width: 65,
-    height: 65,
+    width: 70,
+    height: 70,
     borderRadius: 50,
     marginRight: 16,
     padding: 10,

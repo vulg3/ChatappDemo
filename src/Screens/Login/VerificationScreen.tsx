@@ -23,119 +23,118 @@ import { RootStackScreenEnumLogin } from '../../component/Root/RootStackLogin';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const VerificationScreen = (props: any) => {
-  // const { navigation }: NativeStackHeaderProps = props;
-  // const [value, setValue] = useState<string>('');
-  // const [verify, setVerify] = useState<boolean>(false);
-  // const [codeFieldProps, getCellOnLayout] = useClearByFocusCell({value,setValue});
+  const { navigation }: NativeStackHeaderProps = props;
+  const [value, setValue] = useState<string>('');
+  const [verify, setVerify] = useState<boolean>(false);
+  const [codeFieldProps, getCellOnLayout] = useClearByFocusCell({value,setValue});
 
-  // const [email, setEmail] = useState<string>('');
-  // const [OTP, setOTP] = useState<number>();
-  // console.log(OTP);
+  const [email, setEmail] = useState<string>('');
+  const [OTP, setOTP] = useState<number>();
+  console.log(OTP);
 
-  // const fetchSendMail = async () => {
-  //   const resultUsersInfor = await AxiosInstance().get(
-  //     `/usersInfo/getEmailAllUsersInfor`,
-  //   );
-  //   const checkEmail = resultUsersInfor.data.indexOf(email);
+  const fetchSendMail = async () => {
+    const resultUsersInfor = await AxiosInstance().get(
+      `/usersInfo/getEmailAllUsersInfor`,
+    );
+    const checkEmail = resultUsersInfor.data.indexOf(email);
 
-  //   if (checkEmail >= 0) {
-  //     const response = await AxiosInstance().post(`/usersInfo/VerifyEmail`, {
-  //       email: email,
-  //     });
-  //     setOTP(response.data.random);
-  //     setVerify(true);
-  //   } else {
-  //     Alert.alert('Email không tồn tại và không được để trống !');
-  //   }
-  // };
+    if (checkEmail >= 0) {
+      const response = await AxiosInstance().post(`/usersInfo/VerifyEmail`, {
+        email: email,
+      });
+      setOTP(response.data.random);
+      setVerify(true);
+    } else {
+      Alert.alert('Email không tồn tại và không được để trống !');
+    }
+  };
 
-  // const verifyOTP = async () => {
-  //   if (OTP === parseInt(value)) {
-  //     navigation.navigate('ForgotPassScreen', { email: email });
-  //   } else {
-  //     setValue('');
-  //     Alert.alert('Mã OTP không khớp !');
-  //   }
-  // };
+  const verifyOTP = async () => {
+    if (OTP === parseInt(value)) {
+      navigation.navigate('ForgotPassScreen', { email: email });
+    } else {
+      setValue('');
+      Alert.alert('Mã OTP không khớp !');
+    }
+  };
   return (
-    // <KeyboardAwareScrollView>
-    //   <View
-    //     style={{
-    //       paddingHorizontal: PADDING_HORIZONTAL,
-    //       alignItems: 'center',
-    //       backgroundColor: BG_COLOR,
-    //     }}>
-    //     <View style={{ marginTop: 50 }}>
-    //       <Image source={require('../../assets/Image/Verification.png')} />
-    //       <Text style={styles.textOTP}>Mã Xác Minh OTP</Text>
-    //     </View>
-    //     {!verify ? (
-    //       <View style={{ width: '100%', alignItems: 'center' }}>
-    //         <Text style={styles.text}>
-    //           Chúng tôi sẽ gửi cho bạn một mã xác minh tới email bạn nhập ở dưới
-    //         </Text>
-    //         <Text style={styles.textEnterEmail}>Nhập email</Text>
-    //         <InputItem
-    //           style={{
-    //             borderBottomWidth: 1,
-    //             borderBottomColor: '#5F98DC',
-    //             fontSize: 20,
-    //           }}
-    //           type="email-address"
-    //           onChangeText={setEmail}
-    //           value={email}
-    //           placeholder="Email"></InputItem>
+    <KeyboardAwareScrollView>
+      <View
+        style={{
+          paddingHorizontal: PADDING_HORIZONTAL,
+          alignItems: 'center',
+          backgroundColor: BG_COLOR,
+        }}>
+        <View style={{ marginTop: 50 }}>
+          <Image source={require('../../assets/Image/Verification.png')} />
+          <Text style={styles.textOTP}>Mã Xác Minh OTP</Text>
+        </View>
+        {!verify ? (
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <Text style={styles.text}>
+              Chúng tôi sẽ gửi cho bạn một mã xác minh tới email bạn nhập ở dưới
+            </Text>
+            <Text style={styles.textEnterEmail}>Nhập email</Text>
+            <InputItem
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#5F98DC',
+                fontSize: 20,
+              }}
+              type="email-address"
+              onChangeText={setEmail}
+              value={email}
+              placeholder="Email"></InputItem>
 
-    //         <View style={{ width: '100%' }}>
-    //           <TouchableOpacity onPress={() => fetchSendMail()}>
-    //             <LinearGradient
-    //               start={{ x: 0, y: 0 }}
-    //               end={{ x: 1, y: 1 }}
-    //               colors={['#46caf3', '#5cbae3', '#68b1d9']}
-    //               style={styles.btnLogin}>
-    //               <Text style={styles.textLogin}>Gửi OTP</Text>
-    //             </LinearGradient>
-    //           </TouchableOpacity>
-    //         </View>
-    //       </View>
-    //     ) : (
-    //       <View style={{ width: '100%', alignItems: 'center' }}>
-    //         <Text style={styles.textEnterOTP}>Nhập mã OTP đã được gửi đến</Text>
-    //         <Text style={styles.textEmail}>{email}</Text>
-    //         <CodeField
-    //           {...codeFieldProps}
-    //           keyboardType="numeric"
-    //           returnKeyType="none"
-    //           value={value}
-    //           cellCount={6}
-    //           onChangeText={setValue}
-    //           //render từng ô input number
-    //           renderCell={({ index, symbol, isFocused }) => (
-    //             <Text
-    //               style={[styles.cell, isFocused && styles.focusCell]}
-    //               key={index}
-    //               onLayout={getCellOnLayout(index)}>
-    //               {symbol}
-    //             </Text>
-    //           )}
-    //         />
-    //         <View style={{ width: '100%' }}>
-    //           <TouchableOpacity
-    //             onPress={() => verifyOTP()}>
-    //             <LinearGradient
-    //               start={{ x: 0, y: 0 }}
-    //               end={{ x: 1, y: 1 }}
-    //               colors={['#46caf3', '#5cbae3', '#68b1d9']}
-    //               style={styles.btnLogin}>
-    //               <Text style={styles.textLogin}>Xác Minh</Text>
-    //             </LinearGradient>
-    //           </TouchableOpacity>
-    //         </View>
-    //       </View>
-    //     )}
-    //   </View>
-    // </KeyboardAwareScrollView>
-    <View><Text>VerificationScreen</Text></View>
+            <View style={{ width: '100%' }}>
+              <TouchableOpacity onPress={() => fetchSendMail()}>
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={['#46caf3', '#5cbae3', '#68b1d9']}
+                  style={styles.btnLogin}>
+                  <Text style={styles.textLogin}>Gửi OTP</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <Text style={styles.textEnterOTP}>Nhập mã OTP đã được gửi đến</Text>
+            <Text style={styles.textEmail}>{email}</Text>
+            <CodeField
+              {...codeFieldProps}
+              keyboardType="numeric"
+              returnKeyType="none"
+              value={value}
+              cellCount={6}
+              onChangeText={setValue}
+              //render từng ô input number
+              renderCell={({ index, symbol, isFocused }) => (
+                <Text
+                  style={[styles.cell, isFocused && styles.focusCell]}
+                  key={index}
+                  onLayout={getCellOnLayout(index)}>
+                  {symbol}
+                </Text>
+              )}
+            />
+            <View style={{ width: '100%' }}>
+              <TouchableOpacity
+                onPress={() => verifyOTP()}>
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={['#46caf3', '#5cbae3', '#68b1d9']}
+                  style={styles.btnLogin}>
+                  <Text style={styles.textLogin}>Xác Minh</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
