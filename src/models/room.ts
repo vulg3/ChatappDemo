@@ -1,12 +1,13 @@
 import { Message } from "./message";
 import { User } from "./user";
 
-export interface IRoom {
+export interface Room {
     roomID: string;
     title: string;
     messages: Message[];
     owner: User[];
     members: User[];
+    imgMess:string;
 }
 
 export interface AddRoomDto {
@@ -22,10 +23,13 @@ export interface SearchRoomsDto {
     title?: string;
 }
 
-export interface addMemberToRoom{
-
+export interface addMemberToRoomDto {
+    roomID: string;
+    memberID: string; 
 }
 
-export interface deleteMemberToRoom{
-
+export interface deleteMemberToRoomDto {
+    roomID: string;
+    memberID: string; 
 }
+

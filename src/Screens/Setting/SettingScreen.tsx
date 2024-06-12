@@ -14,6 +14,7 @@ import { HEIGHT, PADDING_HORIZONTAL, WIDTH } from '../../untils/utility';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 import Iconpen from 'react-native-vector-icons/FontAwesome5';
+import IconOut from 'react-native-vector-icons/FontAwesome';
 import ButtonBottom from '../../component/Button/Button';
 import * as Animatable from 'react-native-animatable';
 import ChangeName from './ChangeName';
@@ -26,6 +27,11 @@ const SettingScreen = ({ navigation }: NativeStackHeaderProps | any) => {
   const dispatch = useDispatch();
   const truncatedFullName = user.name.length > 15 ? `${user.name.substring(0, 15)}...` : user.name;
 
+
+
+
+
+  
   return (
     <View style={styles.Container}>
       <ScrollView>
@@ -134,6 +140,19 @@ const SettingScreen = ({ navigation }: NativeStackHeaderProps | any) => {
                 <View style={{ marginLeft: 10 }}>
                   <Text style={styles.Titlefunction}>Help</Text>
                   <Text style={styles.Description}>Privacy, security, change number</Text>
+                </View>
+              </View>
+            </View>
+          </Pressable>
+
+          <Pressable>
+            <View style={styles.itemfunction}>
+              <View style={styles.item}>
+                <IconOut name="sign-out" size={26} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={styles.Titlefunction}>Sign Out</Text>
                 </View>
               </View>
             </View>

@@ -1,10 +1,10 @@
 import { io, Socket } from "socket.io-client";
 import { ClientToServerEvents, ServerToClientEvents } from "../models/event";
-
 import { AddMessageDto } from "../models/message";
+import { baseURL } from "../Axios/Axios";
 
 class SocketService {
-    public readonly socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://192.168.1.3:3000/');
+    public readonly socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(baseURL);
 
     connectWithAuthToken(token: string) {
         try {

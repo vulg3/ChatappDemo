@@ -11,11 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { HEIGHT, WIDTH } from '../../untils/utility';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { RootStackScreenEnumLogin, RootStackScreenLogin } from '../../component/Root/RootStackLogin';
+import { RootStackScreenEnumLogin } from '../../component/Root/RootStackLogin';
 import { isLoading, isLogin, updateUser } from '../../redux/Slices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,8 +24,7 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import Loading from '../../component/Loading/Loading';
 import { User } from '../../models/user';
 import { Login } from '../../models/login';
-import { socketService } from '../../Socket/socket';
-
+import { socketService } from '../../services/socket';
 
 const LoginScreen = (props: any) => {
   const { navigation }: NativeStackHeaderProps = props;
@@ -39,13 +38,11 @@ const LoginScreen = (props: any) => {
       //login Normal
       const emailStorage = await AsyncStorage.getItem('email');
       const passwordStorage = await AsyncStorage.getItem('password');
-      const tokenStorage = await AsyncStorage.getItem('token');
 
       if (emailStorage && passwordStorage) {
         setEmail(emailStorage);
         setPassword(passwordStorage);
       }
-      socketService.connectWithAuthToken(tokenStorage as any);
     }
     getDataStorage()
 
@@ -72,12 +69,12 @@ const LoginScreen = (props: any) => {
 
 
   const handleSubmit = (data: User) => {
-      try {
-        dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, avatar: data.avatar, birthDay: data.birthDate, phonenumber: data.phonenumber, room: data.room, listChat: data.listChat, status: data.status, active: true }));
-        dispatch(isLogin(!isLoginState));
-      } catch (error) {
-        console.log('error', error);
-      }
+    try {
+      dispatch(updateUser({ _id: data._id, _idUser: data._idUser, email: data.email, name: data.name, avatar: data.avatar, birthDay: data.birthDate, phonenumber: data.phonenumber, room: data.room, listChat: data.listChat, status: data.status, active: true }));
+      dispatch(isLogin(!isLoginState));
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   const login = async (info: Login) => {
@@ -92,16 +89,10 @@ const LoginScreen = (props: any) => {
       } else {
         const result = await AxiosInstance().post('/auth/login', { email: info.email, password: info.password });
         const userInfos = result?.data.user;
-        console.log('token', result?.data.token);
-
         userInfos && dispatch(isLoading(true));
         if (result.data.status) {
           const response = await AxiosInstance().post(`/user/GetUserByID/${userInfos._id}`, { name: userInfos.username, email: userInfos.email });
           const user = response.data.data;
-
-          if (!user.avatar) {
-            user.avatar = "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg";
-          }
           console.log('user', user);
 
           user && dispatch(isLoading(false));
@@ -122,7 +113,8 @@ const LoginScreen = (props: any) => {
             phonenumber: user.phonenumber,
             room: user.room,
             active: true,
-          })
+          });
+          socketService.connectWithAuthToken(response?.data.access_token);
         } else {
           console.log('result.data.message', result.data.message);
         }

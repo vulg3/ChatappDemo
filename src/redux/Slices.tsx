@@ -17,8 +17,9 @@ const initialState = {
     avatar: '',
     password: '',
     room: [],
-    active:false,
+    active: false,
   },
+
 };
 
 const Slice = createSlice({

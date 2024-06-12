@@ -3,7 +3,7 @@ export interface Message {
     messID: string;
     content: string;
     senderName: string;
-    sentTime: Date;
+    sendTime: Date;
     isSeen: boolean;
 }
 

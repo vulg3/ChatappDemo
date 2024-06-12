@@ -42,7 +42,7 @@ const IntroductionScreen = (props: any) => {
   });
 
   GoogleSignin.configure({
-    webClientId: '236916747164-a6eh2sk09tf9sckppnlgak3k1kjvk675.apps.googleusercontent.com',
+    webClientId: '759133897476-9qoqju8aooujc22c34apkjfcpbvrc8jq.apps.googleusercontent.com',
   });
 
   const handleSubmit = (data: User) => {
